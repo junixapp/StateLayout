@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.view.ViewGroup
 import android.app.Activity
+import android.graphics.Color
 import android.support.v4.app.Fragment
 import com.lxj.statelayout.State.*
 
@@ -18,6 +19,8 @@ class StateLayout : FrameLayout {
     var emptyView: View = inflate(context, R.layout._loading_layout_empty, null)
     var errorView: View = inflate(context, R.layout._loading_layout_error, null)
     var contentView: View? = null
+    var hasLoadingOverlay: Boolean = false
+    var animDuration = 250L
 
     constructor(context: Context) : super(context)
 
@@ -75,6 +78,10 @@ class StateLayout : FrameLayout {
         addView(emptyView)
         addView(errorView)
         addView(loadingView)
+        bringChildToFront(loadingView)
+        if(hasLoadingOverlay){
+            loadingView.setBackgroundColor(Color.parseColor("#AAFFFFFF"))
+        }
     }
 
     private fun switchLayout(s: State = Loading) {
@@ -113,12 +120,14 @@ class StateLayout : FrameLayout {
                 showAnim(child)
             }else{
                 //hide others
+                if(hasLoadingOverlay && child==contentView && state==Loading){
+                    continue
+                }
                 hideAnim(child)
             }
         }
     }
 
-    var animDuration = 200L
     private fun showAnim(v: View?){
         if(v==null || v.visibility== View.VISIBLE)return
         v.animate().alpha(1f).setDuration(animDuration)

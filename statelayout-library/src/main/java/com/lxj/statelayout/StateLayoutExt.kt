@@ -28,3 +28,10 @@ fun StateLayout.customViewRes(loadingResId: Int = 0,
     }
     return this
 }
+
+fun StateLayout.config(hasLoadingOverlay: Boolean = false,
+                       animDuration: Long = 200L): StateLayout{
+    this.hasLoadingOverlay = hasLoadingOverlay
+    this.animDuration = animDuration
+    return this
+}
