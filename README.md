@@ -1,8 +1,8 @@
 # StateLayout
 Simple way to change your layout state, like loading, empty, error. Strong customizitaion, written by Kotlin.
 
-# Feture
-- Simple API to use
+# Feature
+- simple API to use
 - support Activity, Fragment, View
 - support custom state layout
 
