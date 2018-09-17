@@ -31,11 +31,11 @@ class StateLayout : FrameLayout {
 
     init {
         with(emptyView){
-            visibility = View.GONE
+            visibility = View.INVISIBLE
             alpha = 0f
         }
         with(errorView){
-            visibility = View.GONE
+            visibility = View.INVISIBLE
             alpha = 0f
         }
     }
@@ -53,7 +53,7 @@ class StateLayout : FrameLayout {
             parent.removeView(view)
 
             // 2.wrap a new parent
-            view.visibility = View.GONE
+            view.visibility = View.INVISIBLE
             view.alpha = 0f
             addView(view, LayoutParams(view.measuredWidth, view.measuredHeight))
             prepareStateView()
@@ -145,7 +145,7 @@ class StateLayout : FrameLayout {
         v.animate().alpha(0f).setDuration(animDuration)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
-                        v.visibility = View.GONE
+                        v.visibility = View.INVISIBLE
                     }
                 })
                 .start()
