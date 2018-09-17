@@ -20,6 +20,7 @@ class StateLayout : FrameLayout {
     var errorView: View = inflate(context, R.layout._loading_layout_error, null)
     var contentView: View? = null
     var hasLoadingOverlay: Boolean = false
+    var loadingOverlayColor = Color.parseColor("#CCFFFFFF")
     var animDuration = 250L
 
     constructor(context: Context) : super(context)
@@ -80,7 +81,7 @@ class StateLayout : FrameLayout {
         addView(loadingView)
         bringChildToFront(loadingView)
         if(hasLoadingOverlay){
-            loadingView.setBackgroundColor(Color.parseColor("#AAFFFFFF"))
+            loadingView.setBackgroundColor(loadingOverlayColor)
         }
     }
 
