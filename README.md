@@ -33,6 +33,7 @@ stateLayout.showEmpty()
 ```
 
 # Gradle
+[ ![Download](https://api.bintray.com/packages/li-xiaojun/jrepo/statelayout/images/download.svg) ](https://bintray.com/li-xiaojun/jrepo/statelayout/_latestVersion)
 ```
-compile 'com.lxj:statelayout:0.0.1'
+compile 'com.lxj:statelayout:latest release'
 ```
