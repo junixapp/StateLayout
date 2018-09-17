@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/item_loading"
+        android:visible="true"
+        app:showAsAction="never"
+        android:title="loading"/>
+    <item android:id="@+id/item_empty"
+        android:visible="true"
+        app:showAsAction="never"
+        android:title="empty"/>
+    <item android:id="@+id/item_error"
+        android:visible="true"
+        app:showAsAction="never"
+        android:title="error"/>
+    <item android:id="@+id/item_content"
+        android:visible="true"
+        app:showAsAction="never"
+        android:title="content"/>
+</menu>
