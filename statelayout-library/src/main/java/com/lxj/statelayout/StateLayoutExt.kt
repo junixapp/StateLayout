@@ -1,6 +1,5 @@
 package com.lxj.statelayout
 
-import android.graphics.Color
 import android.view.View
 
 // some extentions
@@ -31,10 +30,14 @@ fun StateLayout.customViewRes(loadingResId: Int = 0,
 }
 
 fun StateLayout.config(hasLoadingOverlay: Boolean = false,
-                       animDuration: Long = 200L,
-                       loadingOverlayColor: Int = Color.parseColor("#AAFFFFFF")): StateLayout{
+                       animDuration: Long = 0L,
+                       loadingOverlayColor: Int = 0): StateLayout{
     this.hasLoadingOverlay = hasLoadingOverlay
-    this.animDuration = animDuration
-    this.loadingOverlayColor = loadingOverlayColor
+    if(animDuration!=0L){
+        this.animDuration = animDuration
+    }
+    if(loadingOverlayColor!=0){
+        this.loadingOverlayColor = loadingOverlayColor
+    }
     return this
 }

@@ -9,6 +9,7 @@ import android.widget.FrameLayout
 import android.view.ViewGroup
 import android.app.Activity
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.support.v4.app.Fragment
 import com.lxj.statelayout.State.*
 
@@ -20,7 +21,7 @@ class StateLayout : FrameLayout {
     var errorView: View = inflate(context, R.layout._loading_layout_error, null)
     var contentView: View? = null
     var hasLoadingOverlay: Boolean = false
-    var loadingOverlayColor = Color.parseColor("#CCFFFFFF")
+    var loadingOverlayColor = Color.parseColor("#DCFFFFFF")
     var animDuration = 250L
 
     constructor(context: Context) : super(context)
@@ -44,7 +45,6 @@ class StateLayout : FrameLayout {
         if (view == null) {
             throw IllegalArgumentException("view can not be null")
         }
-        //for certain width and height
         // 1.remove self
         val parent = view.parent as ViewGroup
         val lp = view.layoutParams
