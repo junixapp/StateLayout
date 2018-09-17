@@ -30,11 +30,11 @@ class StateLayout : FrameLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        with(emptyView){
+        with(emptyView) {
             visibility = View.INVISIBLE
             alpha = 0f
         }
-        with(errorView){
+        with(errorView) {
             visibility = View.INVISIBLE
             alpha = 0f
         }
@@ -45,22 +45,21 @@ class StateLayout : FrameLayout {
             throw IllegalArgumentException("view can not be null")
         }
         //for certain width and height
-        view.post {
-            // 1.remove self
-            val parent = view.parent as ViewGroup
-            val lp = view.layoutParams
-            val index = parent.indexOfChild(view)
-            parent.removeView(view)
+        // 1.remove self
+        val parent = view.parent as ViewGroup
+        val lp = view.layoutParams
+        val index = parent.indexOfChild(view)
+        parent.removeView(view)
 
-            // 2.wrap a new parent
-            view.visibility = View.INVISIBLE
-            view.alpha = 0f
-            addView(view, LayoutParams(view.measuredWidth, view.measuredHeight))
-            prepareStateView()
-            contentView = view
-            // 3.add to parent
-            parent.addView(this, index, lp)
-        }
+        // 2.wrap a new parent
+        view.visibility = View.INVISIBLE
+        view.alpha = 0f
+
+        addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        prepareStateView()
+        contentView = view
+        // 3.add to parent
+        parent.addView(this, index, lp)
         return this
     }
 
@@ -75,12 +74,12 @@ class StateLayout : FrameLayout {
         }
     }
 
-    private fun prepareStateView(){
-        addView(emptyView)
-        addView(errorView)
-        addView(loadingView)
+    private fun prepareStateView() {
+        addView(emptyView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        addView(errorView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        addView(loadingView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         bringChildToFront(loadingView)
-        if(hasLoadingOverlay){
+        if (hasLoadingOverlay) {
             loadingView.setBackgroundColor(loadingOverlayColor)
         }
     }
@@ -112,16 +111,16 @@ class StateLayout : FrameLayout {
     }
 
     private fun show(v: View?) {
-        if(v==null){
+        if (v == null) {
             throw IllegalArgumentException("contentView can not be null!")
         }
-        for (i in 0..childCount){
+        for (i in 0..childCount) {
             val child = getChildAt(i)
-            if(child == v){
+            if (child == v) {
                 showAnim(child)
-            }else{
+            } else {
                 //hide others
-                if(hasLoadingOverlay && child==contentView && state==Loading){
+                if (hasLoadingOverlay && child == contentView && state == Loading) {
                     continue
                 }
                 hideAnim(child)
@@ -129,8 +128,8 @@ class StateLayout : FrameLayout {
         }
     }
 
-    private fun showAnim(v: View?){
-        if(v==null || v.visibility== View.VISIBLE)return
+    private fun showAnim(v: View?) {
+        if (v == null || v.visibility == View.VISIBLE) return
         v.animate().alpha(1f).setDuration(animDuration)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationStart(animation: Animator?) {
@@ -141,7 +140,7 @@ class StateLayout : FrameLayout {
     }
 
     private fun hideAnim(v: View?) {
-        if (v==null || v.visibility == View.GONE) return
+        if (v == null || v.visibility == View.GONE) return
         v.animate().alpha(0f).setDuration(animDuration)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
