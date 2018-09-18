@@ -140,7 +140,7 @@ class StateLayout : FrameLayout {
     }
 
     private fun hideAnim(v: View?) {
-        if (v == null || v.visibility == View.GONE) return
+        if (v == null || v.visibility == View.INVISIBLE) return
         v.animate().alpha(0f).setDuration(animDuration)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
