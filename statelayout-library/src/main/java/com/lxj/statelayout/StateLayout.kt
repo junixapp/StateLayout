@@ -45,21 +45,23 @@ class StateLayout : FrameLayout {
         if (view == null) {
             throw IllegalArgumentException("view can not be null")
         }
-        // 1.remove self
-        val parent = view.parent as ViewGroup
-        val lp = view.layoutParams
-        val index = parent.indexOfChild(view)
-        parent.removeView(view)
+        view.post {
+            // 1.remove self
+            val parent = view.parent as ViewGroup
+            val lp = view.layoutParams
+            val index = parent.indexOfChild(view)
+            parent.removeView(view)
 
-        // 2.wrap a new parent
-        view.visibility = View.INVISIBLE
-        view.alpha = 0f
+            // 2.wrap a new parent
+            view.visibility = View.INVISIBLE
+            view.alpha = 0f
 
-        addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        prepareStateView()
-        contentView = view
-        // 3.add to parent
-        parent.addView(this, index, lp)
+            addView(view, LayoutParams(view.measuredWidth, view.measuredHeight))
+            prepareStateView()
+            contentView = view
+            // 3.add to parent
+            parent.addView(this, index, lp)
+        }
         return this
     }
 

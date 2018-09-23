@@ -8,33 +8,94 @@
     tools:context="com.lxj.demo.MainActivity">
 
     <Button
-        android:text="loading"
         android:id="@+id/btn_loading"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="40dp"
+        android:text="loading" />
+
     <Button
-        android:text="empty"
         android:id="@+id/btn_empty"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="40dp"
+        android:text="empty" />
+
     <Button
-        android:text="error"
         android:id="@+id/btn_error"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="40dp"
+        android:text="error" />
+
     <Button
-        android:text="content"
         android:id="@+id/btn_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="40dp"
+        android:text="content" />
 
     <TextView
         android:id="@+id/view_content"
-        android:gravity="center"
-        android:text="我是一块自定义的Content，使用Statelayout来切换状态"
-        android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="我是一块自定义的Content，使用Statelayout来切换状态"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#aaa">
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_loading2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="loading" />
+
+            <Button
+                android:id="@+id/btn_empty2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="empty" />
+
+            <Button
+                android:id="@+id/btn_error2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="error" />
+
+            <Button
+                android:id="@+id/btn_content2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:text="Another TextView"
+                android:background="@color/colorPrimary"
+                android:id="@+id/tv_content"
+                android:layout_margin="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </LinearLayout>

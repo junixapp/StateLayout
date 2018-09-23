@@ -31,6 +31,14 @@ class MainActivity : AppCompatActivity() {
         btn_empty.setOnClickListener { layout2.showEmpty() }
         btn_error.setOnClickListener { layout2.showError() }
         btn_content.setOnClickListener { layout2.showContent() }
+
+
+        // StateLayout for Another TextView
+        val layout3 = StateLayout(this).wrap(tv_content)
+        btn_loading2.setOnClickListener{layout3.showLoading() }
+        btn_empty2.setOnClickListener { layout3.showEmpty() }
+        btn_error2.setOnClickListener { layout3.showError() }
+        btn_content2.setOnClickListener { layout3.showContent() }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
