@@ -89,7 +89,7 @@
                 android:text="Another TextView"
                 android:background="@color/colorPrimary"
                 android:id="@+id/tv_content"
-                android:layout_margin="30dp"
+                android:layout_margin="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

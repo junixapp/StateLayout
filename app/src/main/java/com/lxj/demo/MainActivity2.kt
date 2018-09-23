@@ -1,5 +1,6 @@
 package com.lxj.demo
 
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -18,6 +19,7 @@ class MainActivity2 : AppCompatActivity() {
         stateLayout = StateLayout(this)
                 .setLoadingRes(R.layout.custom_loading2)
                 .wrap(text)
+        stateLayout.setBackgroundColor(Color.parseColor("#f01111"))
 
     }
 
