@@ -1,20 +1,20 @@
 package com.lxj.statelayout
 
-import android.view.View
+import android.view.LayoutInflater
 
 // some extentions
 fun StateLayout.setLoadingRes(resId: Int): StateLayout{
-    loadingView = View.inflate(context, resId, null)
+    loadingView = LayoutInflater.from(context).inflate(resId,this, false)
     return this
 }
 
 fun StateLayout.setEmptyRes(resId: Int): StateLayout{
-    emptyView = View.inflate(context, resId, null)
+    emptyView = LayoutInflater.from(context).inflate(resId,this, false)
     return this
 }
 
 fun StateLayout.setErrorRes(resId: Int): StateLayout{
-    errorView = View.inflate(context, resId, null)
+    errorView = LayoutInflater.from(context).inflate(resId,this, false)
     return this
 }
 
