@@ -18,6 +18,11 @@ fun StateLayout.setErrorRes(resId: Int): StateLayout{
     return this
 }
 
+fun StateLayout.setDefaultState(s: State): StateLayout{
+    this.state = s
+    return this
+}
+
 fun StateLayout.customViewRes(loadingResId: Int = 0,
                               emptyResId: Int = 0,
                               errorResId: Int = 0): StateLayout{

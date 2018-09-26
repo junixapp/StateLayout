@@ -28,15 +28,17 @@ tasks.withType(Javadoc).all {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
 
 publish {
     userOrg = 'li-xiaojun'
     groupId = 'com.lxj'
     artifactId = 'statelayout'
-    publishVersion = '0.0.7'
+    publishVersion = '0.0.9'
     repoName = 'jrepo'
     desc = 'Simple way to change your layout state, like loading, empty, error. Strong customizitaion, written by Kotlin!'
     website = 'https://github.com/li-xiaojun/StateLayout'
 }
 // ./gradlew clean build bintrayUpload -PbintrayUser=li-xiaojun -PbintrayKey=99f6d08934145ab27e99a75af031b0b3c94d99a4 -PdryRun=false
+// gradlew.bat clean build bintrayUpload -PbintrayUser=li-xiaojun -PbintrayKey=99f6d08934145ab27e99a75af031b0b3c94d99a4 -PdryRun=false

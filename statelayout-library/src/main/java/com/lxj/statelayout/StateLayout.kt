@@ -2,23 +2,21 @@ package com.lxj.statelayout
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Context
-import android.util.AttributeSet
-import android.view.View
-import android.widget.FrameLayout
-import android.view.ViewGroup
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
-import android.support.v4.view.LayoutInflaterCompat
-import android.util.Log
+import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.lxj.statelayout.State.*
 
 
 class StateLayout : FrameLayout {
-    private var state = Loading // default state
+    var state = Loading // default state
     var loadingView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_loading,this, false)
     var emptyView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_empty,this, false)
     var errorView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_error,this, false)
@@ -33,23 +31,12 @@ class StateLayout : FrameLayout {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    init {
-        with(emptyView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
-        }
-        with(errorView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
-        }
-    }
-
     fun wrap(view: View?): StateLayout {
         if (view == null) {
             throw IllegalArgumentException("view can not be null")
         }
         view.post {
-            // 1.apply width&height
+            // 1.apply self width&height
             val temp = ViewGroup.LayoutParams(0,0)
             temp.width = view.measuredWidth
             temp.height = view.measuredHeight
@@ -70,6 +57,9 @@ class StateLayout : FrameLayout {
 
             // 4.add to parent
             parent.addView(this, index, cloneParams(lp as MarginLayoutParams, temp.width, temp.height))
+
+            // 5.show default state
+            switchLayout(state)
         }
         return this
     }
@@ -79,8 +69,9 @@ class StateLayout : FrameLayout {
     fun wrap(fragment: Fragment): StateLayout = wrap(fragment.view)
 
     private fun cloneParams(src: MarginLayoutParams, newWidth: Int, newHeight: Int): MarginLayoutParams{
-        val lp = MarginLayoutParams(newWidth, newHeight)
-        lp.setMargins(src.leftMargin, src.topMargin, src.rightMargin, src.bottomMargin)
+        val lp = if (src is ConstraintLayout.LayoutParams) ConstraintLayout.LayoutParams(src) else MarginLayoutParams(src)
+        lp.width = newWidth
+        lp.height = newHeight
         return lp
     }
 
@@ -92,9 +83,21 @@ class StateLayout : FrameLayout {
     }
 
     private fun prepareStateView() {
-        addView(emptyView)
-        addView(errorView)
-        addView(loadingView)
+        with(emptyView) {
+            visibility = View.INVISIBLE
+            alpha = 0f
+            addView(this)
+        }
+        with(errorView) {
+            visibility = View.INVISIBLE
+            alpha = 0f
+            addView(this)
+        }
+        with(loadingView) {
+            visibility = View.INVISIBLE
+            alpha = 0f
+            addView(this)
+        }
         bringChildToFront(loadingView)
         if (hasLoadingOverlay) {
             loadingView.setBackgroundColor(loadingOverlayColor)
@@ -103,13 +106,14 @@ class StateLayout : FrameLayout {
 
     private fun switchLayout(s: State = Loading) {
         post {
-            state = s
-            when (state) {
-                Loading -> show(loadingView)
-                Empty -> show(emptyView)
-                Error -> show(errorView)
-                Content -> show(contentView)
-            }
+
+        }
+        state = s
+        when (state) {
+            Loading -> show(loadingView)
+            Empty -> show(emptyView)
+            Error -> show(errorView)
+            Content -> show(contentView)
         }
     }
 
