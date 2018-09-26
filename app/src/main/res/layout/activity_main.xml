@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.lxj.demo.MainActivity">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.constraint.ConstraintLayout>
 
     <Button
         android:id="@+id/btn_loading"

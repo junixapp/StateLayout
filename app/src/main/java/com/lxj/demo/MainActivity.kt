@@ -4,8 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
+import com.lxj.statelayout.State
 import com.lxj.statelayout.StateLayout
 import com.lxj.statelayout.config
+import com.lxj.statelayout.setDefaultState
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,11 +18,12 @@ class MainActivity : AppCompatActivity() {
 
         stateLayout = StateLayout(this)
 //                .setLoadingRes(R.layout.custom_loading)
+                .setDefaultState(State.Content)
                 .config(hasLoadingOverlay = true, animDuration = 400)
                 .wrap(this)
-        Handler().postDelayed({
-            stateLayout.showContent()
-        }, 1500)
+//        Handler().postDelayed({
+//            stateLayout.showContent()
+//        }, 1500)
 
         // create StateLayout for textView
         val layout2 = StateLayout(this).wrap(view_content)
