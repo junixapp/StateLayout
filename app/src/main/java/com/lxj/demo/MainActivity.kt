@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
                 .setDefaultState(State.Content)
                 .config(hasLoadingOverlay = true, animDuration = 400)
                 .wrap(this)
-//        Handler().postDelayed({
-//            stateLayout.showContent()
-//        }, 1500)
+        Handler().postDelayed({
+            stateLayout.showContent()
+        }, 1500)
 
         // create StateLayout for textView
         val layout2 = StateLayout(this).wrap(view_content)

@@ -56,7 +56,7 @@ class StateLayout : FrameLayout {
             contentView = view
 
             // 4.add to parent
-            parent.addView(this, index, cloneParams(lp as MarginLayoutParams, temp.width, temp.height))
+            parent.addView(this, index, cloneParams(lp, temp.width, temp.height))
 
             // 5.show default state
             switchLayout(state)
@@ -68,8 +68,12 @@ class StateLayout : FrameLayout {
 
     fun wrap(fragment: Fragment): StateLayout = wrap(fragment.view)
 
-    private fun cloneParams(src: MarginLayoutParams, newWidth: Int, newHeight: Int): MarginLayoutParams{
-        val lp = if (src is ConstraintLayout.LayoutParams) ConstraintLayout.LayoutParams(src) else MarginLayoutParams(src)
+    private fun cloneParams(src: ViewGroup.LayoutParams, newWidth: Int, newHeight: Int): ViewGroup.LayoutParams{
+        val lp = when(src){
+            is ConstraintLayout.LayoutParams -> ConstraintLayout.LayoutParams(src)
+            is MarginLayoutParams -> MarginLayoutParams(src) // donot lose margin
+            else -> LayoutParams(src)
+        }
         lp.width = newWidth
         lp.height = newHeight
         return lp
