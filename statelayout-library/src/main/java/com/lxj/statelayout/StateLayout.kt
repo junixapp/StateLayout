@@ -109,9 +109,6 @@ class StateLayout : FrameLayout {
     }
 
     private fun switchLayout(s: State = Loading) {
-        post {
-
-        }
         state = s
         when (state) {
             Loading -> show(loadingView)

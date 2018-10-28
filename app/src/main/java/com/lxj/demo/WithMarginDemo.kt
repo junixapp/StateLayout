@@ -10,7 +10,7 @@ import com.lxj.statelayout.config
 import com.lxj.statelayout.setLoadingRes
 import kotlinx.android.synthetic.main.activity_main2.*
 
-class MainActivity2 : AppCompatActivity() {
+class WithMarginDemo : AppCompatActivity() {
     lateinit var stateLayout: StateLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

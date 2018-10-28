@@ -3,6 +3,7 @@ package com.lxj.demo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.view.ViewPager
 import android.view.*
 import com.lxj.statelayout.State
 import com.lxj.statelayout.StateLayout
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         stateLayout = StateLayout(this)
 //                .setLoadingRes(R.layout.custom_loading)
-                .setDefaultState(State.Content)
+//                .setDefaultState(State.Content)
                 .config(hasLoadingOverlay = true, animDuration = 400)
                 .wrap(this)
         Handler().postDelayed({
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         btn_empty2.setOnClickListener { layout3.showEmpty() }
         btn_error2.setOnClickListener { layout3.showError() }
         btn_content2.setOnClickListener { layout3.showContent() }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
