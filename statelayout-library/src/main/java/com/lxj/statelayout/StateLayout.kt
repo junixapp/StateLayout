@@ -110,11 +110,14 @@ class StateLayout : FrameLayout {
 
     private fun switchLayout(s: State = Loading) {
         state = s
-        when (state) {
-            Loading -> show(loadingView)
-            Empty -> show(emptyView)
-            Error -> show(errorView)
-            Content -> show(contentView)
+        // ensure show is called behind wrap!
+        post {
+            when (state) {
+                Loading -> show(loadingView)
+                Empty -> show(emptyView)
+                Error -> show(errorView)
+                Content -> show(contentView)
+            }
         }
     }
 
