@@ -6,18 +6,19 @@
     android:gravity="center"
     android:orientation="vertical">
     <ImageView
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
         android:src="@drawable/error"/>
 
 
     <Button
+        android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:text="加载失败，点击重试"
-        android:textColor="#666"/>
+        android:textColor="#444"/>
 
 </LinearLayout>

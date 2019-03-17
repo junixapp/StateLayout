@@ -2,27 +2,23 @@ package com.lxj.statelayout
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Context
-import android.util.AttributeSet
-import android.view.View
-import android.widget.FrameLayout
-import android.view.ViewGroup
 import android.app.Activity
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.content.Context
 import android.support.v4.app.Fragment
+import android.util.AttributeSet
+import android.view.*
+import android.widget.FrameLayout
 import com.lxj.statelayout.State.*
 
 
 class StateLayout : FrameLayout {
     var state = Loading // default state
-    var loadingView: View = inflate(context, R.layout._loading_layout_loading, null)
-    var emptyView: View = inflate(context, R.layout._loading_layout_empty, null)
-    var errorView: View = inflate(context, R.layout._loading_layout_error, null)
+    var loadingView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_loading, this, false)
+    var emptyView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_empty, this, false)
+    var errorView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_error, this, false)
     var contentView: View? = null
-    var hasLoadingOverlay: Boolean = false
-    var loadingOverlayColor = Color.parseColor("#DCFFFFFF")
     var animDuration = 250L
+    var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
 
     constructor(context: Context) : super(context)
 
@@ -30,7 +26,7 @@ class StateLayout : FrameLayout {
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    init {
+    fun wrap(view: View?): StateLayout {
         with(emptyView) {
             visibility = View.INVISIBLE
             alpha = 0f
@@ -38,28 +34,33 @@ class StateLayout : FrameLayout {
         with(errorView) {
             visibility = View.INVISIBLE
             alpha = 0f
+            findViewById<View>(R.id.btn_retry)?.setOnClickListener { mRetryAction?.invoke(errorView) }
+            setOnClickListener { mRetryAction?.invoke(errorView) }
         }
-    }
-
-    fun wrap(view: View?): StateLayout {
         if (view == null) {
             throw IllegalArgumentException("view can not be null")
         }
-        // 1.remove self
-        val parent = view.parent as ViewGroup
-        val lp = view.layoutParams
-        val index = parent.indexOfChild(view)
-        parent.removeView(view)
+        view.post {
+            // 1.remove self
+            val parent = view.parent as ViewGroup
+            val lp = view.layoutParams
+            lp.width = view.measuredWidth
+            lp.height = view.measuredHeight
+            val index = parent.indexOfChild(view)
+            parent.removeView(view)
 
-        // 2.wrap a new parent
-        view.visibility = View.INVISIBLE
-        view.alpha = 0f
+            // 2.wrap view as a parent
+//            view.visibility = View.INVISIBLE
+//            view.alpha = 0f
+            addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 
-        addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        prepareStateView()
-        contentView = view
-        // 3.add to parent
-        parent.addView(this, index, lp)
+            // 3.add this to original parent
+            parent.addView(this, index, lp)
+            contentView = view
+
+            prepareStateView()
+
+        }
         return this
     }
 
@@ -75,55 +76,68 @@ class StateLayout : FrameLayout {
     }
 
     private fun prepareStateView() {
-        addView(emptyView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        addView(errorView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        addView(loadingView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-        bringChildToFront(loadingView)
-        if (hasLoadingOverlay) {
-            loadingView.setBackgroundColor(loadingOverlayColor)
+        addView(emptyView)
+        addView(errorView)
+        addView(loadingView)
+        with(loadingView) {
+            visibility = View.INVISIBLE
+            alpha = 0f
         }
+        bringChildToFront(loadingView)
+
     }
 
     private fun switchLayout(s: State = Loading) {
         state = s
         when (state) {
-            Loading -> show(loadingView)
-            Empty -> show(emptyView)
-            Error -> show(errorView)
-            Content -> show(contentView)
+            Loading -> {
+                show(loadingView)
+                if (useContentBgWhenLoading && contentView?.background != null) {
+                    background = contentView?.background
+                }
+            }
+            Empty -> {
+                show(emptyView)
+            }
+            Error -> {
+                show(errorView)
+            }
+            Content -> {
+                show(contentView)
+            }
         }
     }
 
-    fun showLoading() {
+    fun showLoading(): StateLayout {
         switchLayout(Loading)
+        return this
     }
 
-    fun showContent() {
+    fun showContent(): StateLayout {
         switchLayout(Content)
+        return this
     }
 
-    fun showEmpty() {
+    fun showEmpty(): StateLayout {
         switchLayout(Empty)
+        return this
     }
 
-    fun showError() {
+    fun showError(): StateLayout {
         switchLayout(Error)
+        return this
     }
 
     private fun show(v: View?) {
-        if (v == null) {
-            throw IllegalArgumentException("contentView can not be null!")
-        }
-        for (i in 0..childCount) {
-            val child = getChildAt(i)
-            if (child == v) {
-                showAnim(child)
-            } else {
-                //hide others
-                if (hasLoadingOverlay && child == contentView && state == Loading) {
-                    continue
+        post {
+            for (i in 0..childCount) {
+                val child = getChildAt(i)
+                if (child == v) {
+                    showAnim(child)
+                } else {
+                    //hide others
+                    hideAnim(child)
                 }
-                hideAnim(child)
             }
         }
     }
@@ -150,4 +164,70 @@ class StateLayout : FrameLayout {
                 .start()
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (state == Loading && loadingView.visibility== View.VISIBLE) return true
+        return super.dispatchTouchEvent(ev)
+    }
+
+
+    private var mRetryAction: ((errView: View) -> Unit)? = null
+
+    /**********  自定义配置  **********/
+    /**
+     * 设置加载中的布局
+     */
+    private fun setLoadingLayout(layoutId: Int): StateLayout {
+        loadingView = LayoutInflater.from(context).inflate(layoutId, this, false)
+        (loadingView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
+        return this
+    }
+
+    /**
+     * 设置数据为空的布局
+     */
+    private fun setEmptyLayout(layoutId: Int): StateLayout {
+        emptyView = LayoutInflater.from(context).inflate(layoutId, this, false)
+        (emptyView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
+        return this
+    }
+
+    /**
+     * 设置加载失败的布局
+     */
+    private fun setErrorLayout(layoutId: Int): StateLayout {
+        errorView = LayoutInflater.from(context).inflate(layoutId, this, false)
+        (errorView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
+        return this
+    }
+
+    /**
+     * 设置三种状态的布局
+     */
+    fun customStateLayout(loadingLayoutId: Int = 0,
+                          emptyLayoutId: Int = 0,
+                          errorLayoutId: Int = 0): StateLayout {
+        if (loadingLayoutId != 0) setLoadingLayout(loadingLayoutId)
+        if (emptyLayoutId != 0) setEmptyLayout(emptyLayoutId)
+        if (errorLayoutId != 0) setErrorLayout(errorLayoutId)
+
+        return this
+    }
+
+    /**
+     * 设置一些配置
+     * @param useContentBgWhenLoading 是否在加载状态下使用contentView的背景
+     * @param animDuration 遮照显示和隐藏的动画时长
+     */
+    fun config(useContentBgWhenLoading: Boolean = false,
+               animDuration: Long = 0L,
+               retryAction: ((errView: View) -> Unit)? = null): StateLayout {
+        if(useContentBgWhenLoading){
+            this.useContentBgWhenLoading = useContentBgWhenLoading
+        }
+        if (animDuration != 0L) {
+            this.animDuration = animDuration
+        }
+        mRetryAction = retryAction
+        return this
+    }
 }
