@@ -20,19 +20,21 @@ implementation 'com.lxj:statelayout:最新版本号'
 
 # Usage
 对Activity/Fragment使用:
-```
-val stateLayout = StateLayout(this).wrap(this)
-stateLayout.showLoading()
+```kotlin
+val stateLayout = StateLayout(this)
+            .wrap(this)
+            .showLoading()
 ```
 
 对指定View使用:
-```
-val layout2 = StateLayout(this).wrap(view)
-layout2.showLoading()
+```kotlin
+val layout2 = StateLayout(this)
+            .wrap(view)
+            .showLoading()
 ```
 
 改变状态:
-```
+```kotlin
 stateLayout.showLoading() //default state
 stateLayout.showContent()
 stateLayout.showError()
@@ -40,7 +42,7 @@ stateLayout.showEmpty()
 ```
 
 自定义每种状态对应的布局:
-```
+```kotlin
 StateLayout(this)
     .customStateLayout(loadingLayoutId = R.layout.custom_loading, //自定义加载中布局
             errorLayoutId = R.layout.custom_error, //自定义加载失败布局
