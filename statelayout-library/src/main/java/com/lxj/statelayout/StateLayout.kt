@@ -12,12 +12,12 @@ import com.lxj.statelayout.State.*
 
 
 class StateLayout : FrameLayout {
-    var state = Loading // default state
+    var state = Content // default state
     var loadingView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_loading, this, false)
     var emptyView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_empty, this, false)
     var errorView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_error, this, false)
     var contentView: View? = null
-    var animDuration = 250L
+    var animDuration = 200L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
 
     constructor(context: Context) : super(context)
@@ -27,6 +27,9 @@ class StateLayout : FrameLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     fun wrap(view: View?): StateLayout {
+        if (view == null) {
+            throw IllegalArgumentException("view can not be null")
+        }
         with(emptyView) {
             visibility = View.INVISIBLE
             alpha = 0f
@@ -35,32 +38,41 @@ class StateLayout : FrameLayout {
             visibility = View.INVISIBLE
             alpha = 0f
             findViewById<View>(R.id.btn_retry)?.setOnClickListener { mRetryAction?.invoke(errorView) }
-            setOnClickListener { mRetryAction?.invoke(errorView) }
+            setOnClickListener {
+                showLoading()
+                mRetryAction?.invoke(errorView)
+            }
         }
-        if (view == null) {
-            throw IllegalArgumentException("view can not be null")
+        with(loadingView) {
+            visibility = View.INVISIBLE
+            alpha = 0f
         }
-        view.post {
-            // 1.remove self
-            val parent = view.parent as ViewGroup
-            val lp = view.layoutParams
-            lp.width = view.measuredWidth
-            lp.height = view.measuredHeight
-            val index = parent.indexOfChild(view)
-            parent.removeView(view)
+        prepareStateView()
 
-            // 2.wrap view as a parent
-//            view.visibility = View.INVISIBLE
-//            view.alpha = 0f
-            addView(view, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
-
-            // 3.add this to original parent
-            parent.addView(this, index, lp)
+        view.visibility = View.INVISIBLE
+        view.alpha = 0f
+        if (view.parent == null) {
+            //no attach parent.
+            addView(view, 0, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
             contentView = view
+        } else {
+//            view.post {
+                // 1.remove self
+                val parent = view.parent as ViewGroup
+                val lp = view.layoutParams
+//                lp.width = view.measuredWidth
+//                lp.height = view.measuredHeight
+                val index = parent.indexOfChild(view)
+                parent.removeView(view)
+                // 2.wrap view as a parent
+                addView(view, 0, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 
-            prepareStateView()
-
+                // 3.add this to original parent
+                parent.addView(this, index, lp)
+                contentView = view
+//            }
         }
+        switchLayout(state)
         return this
     }
 
@@ -79,31 +91,25 @@ class StateLayout : FrameLayout {
         addView(emptyView)
         addView(errorView)
         addView(loadingView)
-        with(loadingView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
-        }
-        bringChildToFront(loadingView)
-
     }
 
-    private fun switchLayout(s: State = Loading) {
+    private fun switchLayout(s: State) {
         state = s
         when (state) {
             Loading -> {
-                show(loadingView)
+                switch(loadingView)
                 if (useContentBgWhenLoading && contentView?.background != null) {
                     background = contentView?.background
                 }
             }
             Empty -> {
-                show(emptyView)
+                switch(emptyView)
             }
             Error -> {
-                show(errorView)
+                switch(errorView)
             }
             Content -> {
-                show(contentView)
+                switch(contentView)
             }
         }
     }
@@ -128,8 +134,8 @@ class StateLayout : FrameLayout {
         return this
     }
 
-    private fun show(v: View?) {
-        post {
+    private fun switch(v: View?) {
+        v?.post {
             for (i in 0..childCount) {
                 val child = getChildAt(i)
                 if (child == v) {
@@ -144,6 +150,7 @@ class StateLayout : FrameLayout {
 
     private fun showAnim(v: View?) {
         if (v == null || v.visibility == View.VISIBLE) return
+        v.animate().cancel()
         v.animate().alpha(1f).setDuration(animDuration)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationStart(animation: Animator?) {
@@ -154,18 +161,14 @@ class StateLayout : FrameLayout {
     }
 
     private fun hideAnim(v: View?) {
-        if (v == null || v.visibility == View.INVISIBLE) return
-        v.animate().alpha(0f).setDuration(animDuration)
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
-                        v.visibility = View.INVISIBLE
-                    }
-                })
-                .start()
+        if (v == null ) return
+        v.animate().cancel()
+        v.visibility = View.INVISIBLE
+        v.alpha = 0f
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (state == Loading && loadingView.visibility== View.VISIBLE) return true
+        if (state == Loading && loadingView.visibility == View.VISIBLE) return true
         return super.dispatchTouchEvent(ev)
     }
 
@@ -221,7 +224,7 @@ class StateLayout : FrameLayout {
     fun config(useContentBgWhenLoading: Boolean = false,
                animDuration: Long = 0L,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
-        if(useContentBgWhenLoading){
+        if (useContentBgWhenLoading) {
             this.useContentBgWhenLoading = useContentBgWhenLoading
         }
         if (animDuration != 0L) {

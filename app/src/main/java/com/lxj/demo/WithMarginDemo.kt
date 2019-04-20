@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.*
 import com.lxj.statelayout.StateLayout
-import com.lxj.statelayout.config
-import com.lxj.statelayout.setLoadingRes
 import kotlinx.android.synthetic.main.activity_main2.*
 
 class WithMarginDemo : AppCompatActivity() {
@@ -17,7 +15,7 @@ class WithMarginDemo : AppCompatActivity() {
         setContentView(R.layout.activity_main2)
 
         stateLayout = StateLayout(this)
-                .setLoadingRes(R.layout.custom_loading2)
+                .customStateLayout(loadingLayoutId = R.layout.custom_loading2)
                 .wrap(text)
         stateLayout.setBackgroundColor(Color.parseColor("#f01111"))
 

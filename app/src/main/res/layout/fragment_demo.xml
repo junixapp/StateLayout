@@ -5,21 +5,14 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:background="#f00"
+        android:id="@+id/text"
         android:textSize="30sp"
         android:textColor="@android:color/black"
-        android:text="text in fragment!"
+        android:text="data in fragment!"
+        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/btn_loading"
-        android:text="show loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <Button
-        android:id="@+id/btn_content"
-        android:text="show content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>
