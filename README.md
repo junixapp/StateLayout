@@ -10,6 +10,7 @@ Simple way to change your layout state, like loading, empty, error. Strong custo
 
 # ScreenShot
 ![StateLayout](/screenshot/preview.gif)
+![StateLayout](/screenshot/fragment.gif)
 
 
 # Gradle
@@ -33,7 +34,7 @@ val layout2 = StateLayout(this)
             .showLoading()
 ```
 
-改变状态:
+默认是显示内容布局，改变状态的方法:
 ```kotlin
 stateLayout.showLoading() //default state
 stateLayout.showContent()
@@ -44,10 +45,11 @@ stateLayout.showEmpty()
 自定义每种状态对应的布局:
 ```kotlin
 StateLayout(this)
-    .customStateLayout(loadingLayoutId = R.layout.custom_loading, //自定义加载中布局
+    .config(loadingLayoutId = R.layout.custom_loading, //自定义加载中布局
             errorLayoutId = R.layout.custom_error, //自定义加载失败布局
-            emptyLayoutId = R.layout.custom_empty) //自定义数据位为空的布局
-    .config(useContentBgWhenLoading = true, //加载过程中是否使用内容的背景
+            emptyLayoutId = R.layout.custom_empty, //自定义数据位为空的布局
+            useContentBgWhenLoading = true, //加载过程中是否使用内容的背景
+            enableLoadingShadow = true, //加载过程中是否启用半透明阴影盖在内容上面
             retryAction = { //点击errorView的回调
                 Toast.makeText(this, "点击了重试", Toast.LENGTH_SHORT).show()
             })

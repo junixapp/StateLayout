@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             stateLayout.showContent()
         }, 1000)
 
+
         // create StateLayout for textView
         val layout2 = StateLayout(this)
                 .config(retryAction = {
@@ -45,10 +46,10 @@ class MainActivity : AppCompatActivity() {
 
         //登录按钮，由于按钮太小，不时候使用默认的各个状态的布局，需要自定义
         val loginStateLayout = StateLayout(this)
-                .customStateLayout(loadingLayoutId = R.layout.custom_loading,
+                .config(loadingLayoutId = R.layout.custom_loading,
                         errorLayoutId = R.layout.custom_error,
-                        emptyLayoutId = R.layout.custom_empty)
-                .config(useContentBgWhenLoading = true,
+                        emptyLayoutId = R.layout.custom_empty,
+                        useContentBgWhenLoading = true,
                         retryAction = {
                             Toast.makeText(this, "点击了重试", Toast.LENGTH_SHORT).show()
                         })
@@ -64,10 +65,10 @@ class MainActivity : AppCompatActivity() {
 
         //关注按钮
         val focusStateLayout = StateLayout(this)
-                .customStateLayout(loadingLayoutId = R.layout.custom_loading,
+                .config(loadingLayoutId = R.layout.custom_loading,
                         errorLayoutId = R.layout.custom_error,
-                        emptyLayoutId = R.layout.custom_empty)
-                .config(useContentBgWhenLoading = true,
+                        emptyLayoutId = R.layout.custom_empty,
+                        useContentBgWhenLoading = true,
                         retryAction = {
                             Toast.makeText(this, "点击了重试", Toast.LENGTH_SHORT).show()
                         })

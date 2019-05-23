@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:background="#f00"
+        android:background="#eee"
         android:id="@+id/text"
         android:textSize="30sp"
         android:textColor="@android:color/black"

@@ -15,7 +15,7 @@ class WithMarginDemo : AppCompatActivity() {
         setContentView(R.layout.activity_main2)
 
         stateLayout = StateLayout(this)
-                .customStateLayout(loadingLayoutId = R.layout.custom_loading2)
+                .config(loadingLayoutId = R.layout.custom_loading2)
                 .wrap(text)
         stateLayout.setBackgroundColor(Color.parseColor("#f01111"))
 

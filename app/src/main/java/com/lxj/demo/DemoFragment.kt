@@ -10,8 +10,8 @@ class DemoFragment : BaseFragment() {
 
     override fun init(view: View) {
         //load data
-//        val textView = view.findViewById<TextView>(R.id.text)
-//        textView.text = "${textView.text} - 当前时间${System.currentTimeMillis()}"
+        val textView = view.findViewById<TextView>(R.id.text)
+        textView.text = "${textView.text} - 当前时间${System.currentTimeMillis()}"
     }
 
 }
