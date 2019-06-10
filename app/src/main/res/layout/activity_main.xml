@@ -62,18 +62,19 @@
                 android:textColor="#000"
                 android:textSize="16sp" />
 
-            <TextView
+            <com.lxj.androidktx.widget.ShapeTextView
+                app:stv_solid="#3EC5A5"
+                app:stv_corner="30dp"
                 android:id="@+id/focus"
-                android:layout_width="match_parent"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:background="#ddd"
                 android:gravity="center"
                 android:padding="15dp"
                 android:text="关注"
-                android:textColor="#000"
-                android:textSize="16sp" />
+                android:textColor="#fff"
+                android:textSize="18sp" />
         </LinearLayout>
 
 

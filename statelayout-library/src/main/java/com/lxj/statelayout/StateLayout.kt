@@ -39,7 +39,10 @@ class StateLayout : FrameLayout {
         with(errorView) {
             visibility = View.INVISIBLE
             alpha = 0f
-            findViewById<View>(R.id.btn_retry)?.setOnClickListener { mRetryAction?.invoke(errorView) }
+            findViewById<View>(R.id.btn_retry)?.setOnClickListener {
+                showLoading()
+                mRetryAction?.invoke(errorView)
+            }
             setOnClickListener {
                 showLoading()
                 mRetryAction?.invoke(errorView)
