@@ -36,8 +36,8 @@ val layout2 = StateLayout(this)
 
 默认是显示内容布局，改变状态的方法:
 ```kotlin
-stateLayout.showLoading() //default state
-stateLayout.showContent()
+stateLayout.showLoading()
+stateLayout.showContent() //default state
 stateLayout.showError()
 stateLayout.showEmpty()
 ```
