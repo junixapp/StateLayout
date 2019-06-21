@@ -57,3 +57,16 @@ StateLayout(this)
     .showLoading()
 ```
 
+在Fragment中使用的时候需要注意下，要将StateLayout作为Fragment的View返回：
+```kotlin
+private var stateLayout: StateLayout? = null
+override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    if (fragmentView==null) {
+        fragmentView = inflater.inflate(getLayoutId(), container, false)
+        stateLayout = StateLayout(context!!)
+                .wrap(fragmentView)
+                .showLoading()
+    }
+    return stateLayout
+}
+```
