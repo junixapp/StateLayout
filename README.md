@@ -7,6 +7,7 @@ Simple way to change your layout state, like loading, empty, error. Strong custo
 - 支持对Activity, Fragment, View进行状态切换
 - 支持自定义每种状态的布局
 - 暴露失败状态View点击回调
+- 暂时不支持对ConstraintLayout中的View进行状态切换
 
 # ScreenShot
 ![StateLayout](/screenshot/preview.gif)

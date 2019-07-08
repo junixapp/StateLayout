@@ -5,8 +5,10 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import com.lxj.statelayout.State.*
@@ -61,21 +63,17 @@ class StateLayout : FrameLayout {
             addView(view, 0, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
             contentView = view
         } else {
-//            view.post {
-            // 1.remove self
+            // 1.remove self from parent
             val parent = view.parent as ViewGroup
             val lp = view.layoutParams
-//                lp.width = view.measuredWidth
-//                lp.height = view.measuredHeight
             val index = parent.indexOfChild(view)
             parent.removeView(view)
             // 2.wrap view as a parent
             addView(view, 0, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 
-            // 3.add this to original parent
+            // 3.add this to original parent，暂不支持parent为ConstraintLayout
             parent.addView(this, index, lp)
             contentView = view
-//            }
         }
         switchLayout(Content)
         return this

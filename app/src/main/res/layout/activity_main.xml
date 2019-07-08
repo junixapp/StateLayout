@@ -46,11 +46,13 @@
             android:text="我是一块任意的内容View，使用StateLayout来切换状态"
             android:textSize="20sp" />
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/login"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -63,6 +65,8 @@
                 android:textSize="16sp" />
 
             <com.lxj.androidktx.widget.ShapeTextView
+                app:layout_constraintLeft_toRightOf="@id/login"
+                app:layout_constraintTop_toTopOf="parent"
                 app:stv_solid="#3EC5A5"
                 app:stv_corner="30dp"
                 android:id="@+id/focus"
@@ -75,7 +79,7 @@
                 android:text="关注"
                 android:textColor="#fff"
                 android:textSize="18sp" />
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
 
         <Button
