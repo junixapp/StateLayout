@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_loading -> stateLayout.showLoading()
-            R.id.item_empty -> stateLayout.showEmpty()
+            R.id.item_empty -> stateLayout.showEmpty("没有数据了啊")
             R.id.item_error -> stateLayout.showError()
             R.id.item_content -> stateLayout.showContent()
         }

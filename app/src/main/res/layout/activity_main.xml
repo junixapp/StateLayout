@@ -46,7 +46,8 @@
             android:text="我是一块任意的内容View，使用StateLayout来切换状态"
             android:textSize="20sp" />
 
-        <android.support.constraint.ConstraintLayout
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -78,8 +79,8 @@
                 android:padding="15dp"
                 android:text="关注"
                 android:textColor="#fff"
-                android:textSize="18sp" />
-        </android.support.constraint.ConstraintLayout>
+                android:textSize="18sp"/>
+        </LinearLayout>
 
 
         <Button

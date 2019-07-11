@@ -5,13 +5,14 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import com.lxj.statelayout.State.*
+import org.w3c.dom.Text
 
 
 class StateLayout : FrameLayout {
@@ -123,8 +124,10 @@ class StateLayout : FrameLayout {
         }
     }
 
-    fun showLoading(): StateLayout {
+    fun showLoading(showText: Boolean = true): StateLayout {
         switchLayout(Loading)
+        val textView = loadingView.findViewById<TextView>(R.id.tvLoading)
+        textView?.visibility = if(showText) View.VISIBLE else View.GONE
         return this
     }
 
@@ -133,8 +136,12 @@ class StateLayout : FrameLayout {
         return this
     }
 
-    fun showEmpty(): StateLayout {
+    fun showEmpty(noDataText: String = "暂无数据", noDataIconRes: Int = R.drawable._statelayout_empty): StateLayout {
         switchLayout(Empty)
+        val textView = emptyView.findViewById<TextView>(R.id.tvNoDataText)
+        textView?.text = noDataText
+        val imageView = emptyView.findViewById<ImageView>(R.id.ivNoDataIcon)
+        imageView?.setImageResource(noDataIconRes)
         return this
     }
 
