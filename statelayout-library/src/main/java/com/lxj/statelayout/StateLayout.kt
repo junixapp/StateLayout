@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.util.AttributeSet
 import android.view.*
@@ -12,7 +13,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.lxj.statelayout.State.*
-import org.w3c.dom.Text
 
 
 class StateLayout : FrameLayout {
@@ -42,14 +42,8 @@ class StateLayout : FrameLayout {
         with(errorView) {
             visibility = View.INVISIBLE
             alpha = 0f
-            findViewById<View>(R.id.btn_retry)?.setOnClickListener {
-                showLoading()
-                mRetryAction?.invoke(errorView)
-            }
-            setOnClickListener {
-                showLoading()
-                mRetryAction?.invoke(errorView)
-            }
+            findViewById<View>(R.id.btn_retry)?.setOnClickListener { retry() }
+            setOnClickListener {retry() }
         }
         with(loadingView) {
             visibility = View.INVISIBLE
@@ -156,6 +150,13 @@ class StateLayout : FrameLayout {
         }
         switchTask = SwitchTask(v!!)
         post(switchTask)
+    }
+
+    private fun retry(){
+        showLoading()
+        handler.postDelayed({
+            mRetryAction?.invoke(errorView)
+        }, animDuration)
     }
 
     var switchTask: SwitchTask? = null

@@ -18,9 +18,11 @@ class MainActivity : AppCompatActivity() {
         stateLayout = StateLayout(this)
                 .config(retryAction = {
                     Toast.makeText(this, "点击了重试", Toast.LENGTH_SHORT).show()
+                    stateLayout.showError()
                 })
                 .wrap(this)
                 .showLoading()
+//                .showError()
 
         Handler().postDelayed({
             stateLayout.showContent()
