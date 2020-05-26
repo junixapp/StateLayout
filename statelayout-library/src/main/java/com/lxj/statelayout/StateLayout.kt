@@ -5,8 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.os.Handler
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.AttributeSet
 import android.view.*
 import android.widget.FrameLayout
@@ -24,6 +23,8 @@ class StateLayout : FrameLayout {
     var animDuration = 250L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
+    var noDataText: String = "暂无数据"
+    var mLoadingText: String = "加载中"
 
     constructor(context: Context) : super(context)
 
@@ -121,6 +122,7 @@ class StateLayout : FrameLayout {
     fun showLoading(showText: Boolean = true): StateLayout {
         switchLayout(Loading)
         val textView = loadingView.findViewById<TextView>(R.id.tvLoading)
+        textView.text = mLoadingText
         textView?.visibility = if(showText) View.VISIBLE else View.GONE
         return this
     }
@@ -130,7 +132,7 @@ class StateLayout : FrameLayout {
         return this
     }
 
-    fun showEmpty(noDataText: String = "暂无数据", noDataIconRes: Int = R.drawable._statelayout_empty): StateLayout {
+    fun showEmpty(noDataIconRes: Int = R.drawable._statelayout_empty): StateLayout {
         switchLayout(Empty)
         val textView = emptyView.findViewById<TextView>(R.id.tvNoDataText)
         textView?.text = noDataText
@@ -244,10 +246,14 @@ class StateLayout : FrameLayout {
     fun config(loadingLayoutId: Int = 0,
                emptyLayoutId: Int = 0,
                errorLayoutId: Int = 0,
+               emptyText: String = "暂无数据",
+               loadingText: String = "加载中",
                useContentBgWhenLoading: Boolean = false,
                animDuration: Long = 0L,
                enableLoadingShadow: Boolean = false,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
+        noDataText = emptyText
+        mLoadingText = loadingText
         if (loadingLayoutId != 0) setLoadingLayout(loadingLayoutId)
         if (emptyLayoutId != 0) setEmptyLayout(emptyLayoutId)
         if (errorLayoutId != 0) setErrorLayout(errorLayoutId)

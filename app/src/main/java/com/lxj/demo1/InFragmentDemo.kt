@@ -1,8 +1,8 @@
-package com.lxj.demo
+package com.lxj.demo1
 
 import android.os.Bundle
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v7.app.AppCompatActivity
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_in_fragment.*
 
 class InFragmentDemo: AppCompatActivity(){

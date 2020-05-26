@@ -1,4 +1,4 @@
-package com.lxj.demo
+package com.lxj.demo1
 
 import android.view.View
 import android.widget.TextView

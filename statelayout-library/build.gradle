@@ -6,7 +6,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -23,14 +23,14 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
 
 publish {
     userOrg = 'li-xiaojun'
     groupId = 'com.lxj'
     artifactId = 'statelayout'
-    publishVersion = '1.0.5'
+    publishVersion = '1.0.6'
     repoName = 'jrepo'
     desc = 'Simple way to change your layout state, like loading, _statelayout_empty, _statelayout_error. Strong customizitaion, written by Kotlin!'
     website = 'https://github.com/li-xiaojun/StateLayout'

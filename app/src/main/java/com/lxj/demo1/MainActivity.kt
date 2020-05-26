@@ -1,7 +1,7 @@
-package com.lxj.demo
+package com.lxj.demo1
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
@@ -16,7 +16,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         stateLayout = StateLayout(this)
-                .config(retryAction = {
+                .config(
+                        loadingText = "自定义加载文字",
+                        emptyText = "自定义文字",
+                        retryAction = {
                     Toast.makeText(this, "点击了重试", Toast.LENGTH_SHORT).show()
                     stateLayout.showError()
                 })
@@ -91,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_loading -> stateLayout.showLoading()
-            R.id.item_empty -> stateLayout.showEmpty("没有数据了啊")
+            R.id.item_empty -> stateLayout.showEmpty()
             R.id.item_error -> stateLayout.showError()
             R.id.item_content -> stateLayout.showContent()
         }

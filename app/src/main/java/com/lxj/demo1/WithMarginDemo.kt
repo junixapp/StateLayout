@@ -1,10 +1,8 @@
-package com.lxj.demo
+package com.lxj.demo1
 
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.view.*
 import com.lxj.statelayout.StateLayout
 import kotlinx.android.synthetic.main.activity_main2.*
 
