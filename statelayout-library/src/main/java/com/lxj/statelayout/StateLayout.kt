@@ -122,7 +122,7 @@ class StateLayout : FrameLayout {
     fun showLoading(showText: Boolean = true): StateLayout {
         switchLayout(Loading)
         val textView = loadingView.findViewById<TextView>(R.id.tvLoading)
-        textView.text = mLoadingText
+        textView?.text = mLoadingText
         textView?.visibility = if(showText) View.VISIBLE else View.GONE
         return this
     }
