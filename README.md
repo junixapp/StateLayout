@@ -43,6 +43,25 @@ stateLayout.showError()
 stateLayout.showEmpty()
 ```
 
+在布局中使用:
+```
+<com.lxj.statelayout.StateLayout
+            android:id="@+id/slInLayout"
+            android:layout_marginBottom="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvInLayout"
+                android:gravity="center"
+                android:text="测试布局中使用"
+                android:background="#9f00"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"/>
+        </com.lxj.statelayout.StateLayout>
+```
+
 自定义每种状态对应的布局:
 ```kotlin
 StateLayout(this)
