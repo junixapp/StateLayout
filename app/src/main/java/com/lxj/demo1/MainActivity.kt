@@ -89,6 +89,14 @@ class MainActivity : AppCompatActivity() {
         btn_in_fragment.setOnClickListener {
             startActivity(Intent(this, InFragmentDemo::class.java))
         }
+
+        //测试布局中使用
+        slInLayout.config { slInLayout.postDelayed({slInLayout.showEmpty()}, 1000) }
+        slInLayout.showLoading()
+        slInLayout.postDelayed({slInLayout.showContent()}, 2000)
+        tvInLayout.setOnClickListener {
+            slInLayout.showError()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

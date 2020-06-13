@@ -36,20 +36,7 @@ class StateLayout : FrameLayout {
         if (view == null) {
             throw IllegalArgumentException("view can not be null")
         }
-        with(emptyView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
-        }
-        with(errorView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
-            findViewById<View>(R.id.btn_retry)?.setOnClickListener { retry() }
-            setOnClickListener {retry() }
-        }
-        with(loadingView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
-        }
+
         prepareStateView()
 
         view.visibility = View.INVISIBLE
@@ -81,12 +68,32 @@ class StateLayout : FrameLayout {
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        if (contentView == null) {
-            throw IllegalArgumentException("contentView can not be null!")
+        if(childCount>0){
+            contentView = getChildAt(0)
         }
+        prepareStateView()
+        switchLayout(Content)
+    }
+
+    fun init(){
+
     }
 
     private fun prepareStateView() {
+        with(emptyView) {
+            visibility = View.INVISIBLE
+            alpha = 0f
+        }
+        with(errorView) {
+            visibility = View.INVISIBLE
+            alpha = 0f
+            findViewById<View>(R.id.btn_retry)?.setOnClickListener { retry() }
+            setOnClickListener {retry() }
+        }
+        with(loadingView) {
+            visibility = View.INVISIBLE
+            alpha = 0f
+        }
         addView(emptyView)
         addView(errorView)
         addView(loadingView)
