@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.Fragment
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -70,33 +71,37 @@ class StateLayout : FrameLayout {
         super.onFinishInflate()
         if(childCount>0){
             contentView = getChildAt(0)
+            prepareStateView()
+            switchLayout(Content)
         }
-        prepareStateView()
-        switchLayout(Content)
-    }
-
-    fun init(){
-
     }
 
     private fun prepareStateView() {
-        with(emptyView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
+        if(emptyView.parent ==null){
+            with(emptyView) {
+                visibility = View.INVISIBLE
+                alpha = 0f
+            }
+            addView(emptyView)
         }
-        with(errorView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
-            findViewById<View>(R.id.btn_retry)?.setOnClickListener { retry() }
-            setOnClickListener {retry() }
+
+        if(errorView.parent==null){
+            with(errorView) {
+                visibility = View.INVISIBLE
+                alpha = 0f
+                findViewById<View>(R.id.btn_retry)?.setOnClickListener { retry() }
+                setOnClickListener {retry() }
+            }
+            addView(errorView)
         }
-        with(loadingView) {
-            visibility = View.INVISIBLE
-            alpha = 0f
+
+        if(loadingView.parent == null){
+            with(loadingView) {
+                visibility = View.INVISIBLE
+                alpha = 0f
+            }
+            addView(loadingView)
         }
-        addView(emptyView)
-        addView(errorView)
-        addView(loadingView)
     }
 
     private fun switchLayout(s: State) {
@@ -217,8 +222,12 @@ class StateLayout : FrameLayout {
      * 设置加载中的布局
      */
     private fun setLoadingLayout(layoutId: Int): StateLayout {
+        if(loadingView.parent!=null) removeView(loadingView)
         loadingView = LayoutInflater.from(context).inflate(layoutId, this, false)
         (loadingView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
+        loadingView.visibility = View.INVISIBLE
+        loadingView.alpha = 0f
+        addView(loadingView)
         return this
     }
 
@@ -226,8 +235,12 @@ class StateLayout : FrameLayout {
      * 设置数据为空的布局
      */
     private fun setEmptyLayout(layoutId: Int): StateLayout {
+        if(emptyView.parent !=null) removeView(emptyView)
         emptyView = LayoutInflater.from(context).inflate(layoutId, this, false)
         (emptyView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
+        emptyView.visibility = View.INVISIBLE
+        emptyView.alpha = 0f
+        addView(emptyView)
         return this
     }
 
@@ -235,8 +248,13 @@ class StateLayout : FrameLayout {
      * 设置加载失败的布局
      */
     private fun setErrorLayout(layoutId: Int): StateLayout {
+        if(errorView.parent!=null) removeView(errorView)
         errorView = LayoutInflater.from(context).inflate(layoutId, this, false)
         (errorView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
+        errorView.visibility = View.INVISIBLE
+        errorView.alpha = 0f
+        errorView.setOnClickListener {retry() }
+        addView(errorView)
         return this
     }
 

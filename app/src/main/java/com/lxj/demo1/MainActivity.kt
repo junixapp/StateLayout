@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         stateLayout = StateLayout(this)
                 .config(
+                        emptyLayoutId = R.layout.custom_empty,
                         loadingText = "自定义加载文字",
                         emptyText = "自定义文字",
                         retryAction = {
@@ -91,7 +92,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         //测试布局中使用
-        slInLayout.config { slInLayout.postDelayed({slInLayout.showEmpty()}, 1000) }
+        slInLayout.config(
+                loadingLayoutId = R.layout.custom_loading2,
+                errorLayoutId = R.layout.custom_error,
+                emptyLayoutId = R.layout.custom_empty) { slInLayout.postDelayed({slInLayout.showEmpty()}, 1000) }
         slInLayout.showLoading()
         slInLayout.postDelayed({slInLayout.showContent()}, 2000)
         tvInLayout.setOnClickListener {
