@@ -69,6 +69,7 @@
                 app:layout_constraintLeft_toRightOf="@id/login"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/focus"
+                android:background="#f00"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
@@ -90,6 +91,7 @@
 
         <com.lxj.statelayout.StateLayout
             android:id="@+id/slInLayout"
+            app:sl_loadingText="loading"
             android:layout_marginBottom="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

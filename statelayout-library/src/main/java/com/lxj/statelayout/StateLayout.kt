@@ -7,31 +7,43 @@ import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.Fragment
 import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.lxj.statelayout.State.*
 
-
-class StateLayout : FrameLayout {
+class StateLayout @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0)
+    : FrameLayout(context, attributeSet, defStyleAttr) {
     var state = None // default state
-    var loadingView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_loading, this, false)
-    var emptyView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_empty, this, false)
-    var errorView: View = LayoutInflater.from(context).inflate(R.layout._loading_layout_error, this, false)
+    var loadingView: View
+    var emptyView: View
+    var errorView: View
     var contentView: View? = null
     var animDuration = 250L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
     var noDataText: String = "暂无数据"
     var mLoadingText: String = "加载中"
+    var enableTouchWhenLoading = false
+    
+    init {
+        val ta = context.obtainStyledAttributes(attributeSet, R.styleable.StateLayout)
+        val loadingLayout = ta.getResourceId(R.styleable.StateLayout_sl_loadingLayoutId, R.layout._loading_layout_loading)
+        val emptyLayout = ta.getResourceId(R.styleable.StateLayout_sl_emptyLayoutId, R.layout._loading_layout_empty)
+        val errorLayout = ta.getResourceId(R.styleable.StateLayout_sl_errorLayoutId, R.layout._loading_layout_error)
+        animDuration = ta.getInt(R.styleable.StateLayout_sl_animDuration, 250).toLong()
+        useContentBgWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_useContentBgWhenLoading, false)
+        enableLoadingShadow = ta.getBoolean(R.styleable.StateLayout_sl_enableLoadingShadow, false)
+        enableTouchWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_enableTouchWhenLoading, false)
+        noDataText = ta.getString(R.styleable.StateLayout_sl_emptyText) ?: "暂无数据"
+        mLoadingText = ta.getString(R.styleable.StateLayout_sl_loadingText) ?: "加载中"
+        ta.recycle()
 
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+        loadingView = LayoutInflater.from(context).inflate(loadingLayout, this, false)
+        emptyView = LayoutInflater.from(context).inflate(emptyLayout, this, false)
+        errorView = LayoutInflater.from(context).inflate(errorLayout, this, false)
+    }
 
     fun wrap(view: View?): StateLayout {
         if (view == null) {
@@ -114,9 +126,9 @@ class StateLayout : FrameLayout {
                     background = contentView?.background
                 }
                 if (enableLoadingShadow) {
-                    loadingView.setBackgroundColor(Color.parseColor("#66000000"))
+                    loadingView?.setBackgroundColor(Color.parseColor("#88000000"))
                 } else {
-                    loadingView.setBackgroundResource(0)
+                    loadingView?.setBackgroundResource(0)
                 }
             }
             Empty -> {
@@ -133,7 +145,7 @@ class StateLayout : FrameLayout {
 
     fun showLoading(showText: Boolean = true): StateLayout {
         switchLayout(Loading)
-        val textView = loadingView.findViewById<TextView>(R.id.tvLoading)
+        val textView = loadingView?.findViewById<TextView>(R.id.tvLoading)
         textView?.text = mLoadingText
         textView?.visibility = if(showText) View.VISIBLE else View.GONE
         return this
@@ -146,9 +158,9 @@ class StateLayout : FrameLayout {
 
     fun showEmpty(noDataIconRes: Int = R.drawable._statelayout_empty): StateLayout {
         switchLayout(Empty)
-        val textView = emptyView.findViewById<TextView>(R.id.tvNoDataText)
+        val textView = emptyView?.findViewById<TextView>(R.id.tvNoDataText)
         textView?.text = noDataText
-        val imageView = emptyView.findViewById<ImageView>(R.id.ivNoDataIcon)
+        val imageView = emptyView?.findViewById<ImageView>(R.id.ivNoDataIcon)
         imageView?.setImageResource(noDataIconRes)
         return this
     }
@@ -162,7 +174,7 @@ class StateLayout : FrameLayout {
         if (switchTask != null) {
             removeCallbacks(switchTask)
         }
-        switchTask = SwitchTask(v!!)
+        switchTask = SwitchTask(v)
         post(switchTask)
     }
 
@@ -175,7 +187,7 @@ class StateLayout : FrameLayout {
 
     var switchTask: SwitchTask? = null
 
-    inner class SwitchTask(private var target: View) : Runnable {
+    inner class SwitchTask(private var target: View?) : Runnable {
         override fun run() {
             for (i in 0..childCount) {
                 if (state == Loading && enableLoadingShadow && getChildAt(i) == contentView) continue
@@ -210,7 +222,7 @@ class StateLayout : FrameLayout {
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (state == Loading && loadingView.visibility == View.VISIBLE) return true
+        if (state == Loading && loadingView?.visibility == View.VISIBLE && !enableTouchWhenLoading) return true
         return super.dispatchTouchEvent(ev)
     }
 
@@ -266,6 +278,7 @@ class StateLayout : FrameLayout {
      * @param useContentBgWhenLoading 是否在加载状态下使用contentView的背景
      * @param animDuration 遮照显示和隐藏的动画时长
      * @param enableLoadingShadow 是否启用加载时的半透明阴影
+     * @param enableTouchWhenLoading 是否在加载时允许触摸下层View
      * @param retryAction 加载失败状态下点击重试的行为
      */
     fun config(loadingLayoutId: Int = 0,
@@ -276,6 +289,7 @@ class StateLayout : FrameLayout {
                useContentBgWhenLoading: Boolean = false,
                animDuration: Long = 0L,
                enableLoadingShadow: Boolean = false,
+               enableTouchWhenLoading: Boolean = false,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
         noDataText = emptyText
         mLoadingText = loadingText
@@ -289,6 +303,7 @@ class StateLayout : FrameLayout {
             this.animDuration = animDuration
         }
         this.enableLoadingShadow = enableLoadingShadow
+        this.enableTouchWhenLoading = enableTouchWhenLoading
         mRetryAction = retryAction
         return this
     }
