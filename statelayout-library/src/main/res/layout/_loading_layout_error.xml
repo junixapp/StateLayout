@@ -11,15 +11,14 @@
         android:layout_gravity="center"
         android:src="@drawable/_statelayout_error"/>
 
-
     <Button
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        android:layout_height="32dp"
         android:layout_gravity="center"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:textSize="13sp"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:textSize="12sp"
         android:layout_marginTop="15dp"
         android:background="@drawable/_statelayout_btn_bg"
         android:text="加载失败，点击重试"

@@ -24,7 +24,6 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
     var noDataText: String = "暂无数据"
-    var mLoadingText: String = "加载中"
     var enableTouchWhenLoading = false
     
     init {
@@ -37,7 +36,6 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         enableLoadingShadow = ta.getBoolean(R.styleable.StateLayout_sl_enableLoadingShadow, false)
         enableTouchWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_enableTouchWhenLoading, false)
         noDataText = ta.getString(R.styleable.StateLayout_sl_emptyText) ?: "暂无数据"
-        mLoadingText = ta.getString(R.styleable.StateLayout_sl_loadingText) ?: "加载中"
         ta.recycle()
 
         loadingView = LayoutInflater.from(context).inflate(loadingLayout, this, false)
@@ -145,9 +143,6 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
 
     fun showLoading(showText: Boolean = true): StateLayout {
         switchLayout(Loading)
-        val textView = loadingView?.findViewById<TextView>(R.id.tvLoading)
-        textView?.text = mLoadingText
-        textView?.visibility = if(showText) View.VISIBLE else View.GONE
         return this
     }
 
@@ -285,14 +280,12 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                emptyLayoutId: Int = 0,
                errorLayoutId: Int = 0,
                emptyText: String = "暂无数据",
-               loadingText: String = "加载中",
                useContentBgWhenLoading: Boolean = false,
                animDuration: Long = 0L,
                enableLoadingShadow: Boolean = false,
                enableTouchWhenLoading: Boolean = false,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
         noDataText = emptyText
-        mLoadingText = loadingText
         if (loadingLayoutId != 0) setLoadingLayout(loadingLayoutId)
         if (emptyLayoutId != 0) setEmptyLayout(emptyLayoutId)
         if (errorLayoutId != 0) setErrorLayout(errorLayoutId)

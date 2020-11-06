@@ -91,7 +91,6 @@
 
         <com.lxj.statelayout.StateLayout
             android:id="@+id/slInLayout"
-            app:sl_loadingText="loading"
             android:layout_marginBottom="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
