@@ -25,7 +25,8 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
     var noDataText: String = "暂无数据"
     var enableTouchWhenLoading = false
-    
+    var defaultShowLoading = false
+
     init {
         val ta = context.obtainStyledAttributes(attributeSet, R.styleable.StateLayout)
         val loadingLayout = ta.getResourceId(R.styleable.StateLayout_sl_loadingLayoutId, R.layout._loading_layout_loading)
@@ -35,6 +36,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         useContentBgWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_useContentBgWhenLoading, false)
         enableLoadingShadow = ta.getBoolean(R.styleable.StateLayout_sl_enableLoadingShadow, false)
         enableTouchWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_enableTouchWhenLoading, false)
+        defaultShowLoading = ta.getBoolean(R.styleable.StateLayout_sl_defaultShowLoading, false)
         noDataText = ta.getString(R.styleable.StateLayout_sl_emptyText) ?: "暂无数据"
         ta.recycle()
 
@@ -69,7 +71,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
             parent.addView(this, index, lp)
             contentView = view
         }
-        switchLayout(Content)
+        switchLayout(if(defaultShowLoading) Loading else Content)
         return this
     }
 
@@ -82,7 +84,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         if(childCount>0){
             contentView = getChildAt(0)
             prepareStateView()
-            switchLayout(Content)
+            switchLayout(if(defaultShowLoading) Loading else Content)
         }
     }
 
@@ -282,6 +284,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                emptyText: String = "暂无数据",
                useContentBgWhenLoading: Boolean = false,
                animDuration: Long = 0L,
+               defaultShowLoading: Boolean = false,
                enableLoadingShadow: Boolean = false,
                enableTouchWhenLoading: Boolean = false,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
@@ -295,6 +298,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         if (animDuration != 0L) {
             this.animDuration = animDuration
         }
+        this.defaultShowLoading = defaultShowLoading
         this.enableLoadingShadow = enableLoadingShadow
         this.enableTouchWhenLoading = enableTouchWhenLoading
         mRetryAction = retryAction

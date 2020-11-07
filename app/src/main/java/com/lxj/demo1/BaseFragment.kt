@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.lxj.statelayout.StateLayout
 
 
 /**
@@ -15,22 +14,23 @@ import com.lxj.statelayout.StateLayout
 abstract class BaseFragment : Fragment() {
     private var fragmentView: View? = null
     private var isInit = false
-    private var stateLayout: StateLayout? = null
 
     protected abstract fun getLayoutId(): Int
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (fragmentView==null) {
             fragmentView = inflater.inflate(getLayoutId(), container, false)
-            stateLayout = StateLayout(context!!)
-                    .wrap(fragmentView)
-                    .showLoading()
         }
-        return stateLayout
+        return fragmentView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        safeInit()
+    }
+
+    override fun onResume() {
+        super.onResume()
         safeInit()
     }
 
@@ -39,10 +39,6 @@ abstract class BaseFragment : Fragment() {
             if (!isInit) {
                 isInit = true
                 init(fragmentView!!)
-                stateLayout?.apply {
-                    postDelayed({ showContent() },500)
-                }
-
             }
         }
     }
