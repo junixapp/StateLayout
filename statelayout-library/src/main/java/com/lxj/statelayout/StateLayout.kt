@@ -7,7 +7,6 @@ import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.Fragment
 import android.util.AttributeSet
-import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -271,11 +270,13 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                emptyText: String = "暂无数据",
                useContentBgWhenLoading: Boolean = false,
                animDuration: Long = 0L,
+               noEmptyAndError: Boolean = false,
                defaultShowLoading: Boolean = false,
                enableLoadingShadow: Boolean = false,
                enableTouchWhenLoading: Boolean = false,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
         noDataText = emptyText
+        this.noEmptyAndError = noEmptyAndError
         if (loadingLayoutId != 0) setLoadingLayout(loadingLayoutId)
         if (emptyLayoutId != 0) setEmptyLayout(emptyLayoutId)
         if (errorLayoutId != 0) setErrorLayout(errorLayoutId)
