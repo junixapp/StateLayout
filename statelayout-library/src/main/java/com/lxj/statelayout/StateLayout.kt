@@ -51,9 +51,9 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
             throw IllegalArgumentException("view can not be null")
         }
 
-        setLoadingLayout(loadingLayoutId)
-        setEmptyLayout(emptyLayoutId)
-        setErrorLayout(errorLayoutId)
+        setLoadingLayout()
+        setEmptyLayout()
+        setErrorLayout()
 
         view.visibility = View.INVISIBLE
         view.alpha = 0f
@@ -86,15 +86,15 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         super.onFinishInflate()
         if (childCount > 0) {
             contentView = getChildAt(0)
-            setLoadingLayout(loadingLayoutId)
-            setEmptyLayout(emptyLayoutId)
-            setErrorLayout(errorLayoutId)
+            setLoadingLayout()
+            setEmptyLayout()
+            setErrorLayout()
             switchLayout(if (defaultShowLoading) Loading else Content)
         }
     }
 
-    private fun switchLayout(s: State) {
-        if (state == s) return
+    private fun switchLayout(s: State, forceSwitch : Boolean =false) {
+        if (state == s && !forceSwitch) return
         state = s
         when (state) {
             Loading -> {
@@ -190,7 +190,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         v.animate().alpha(0f).setDuration(animDuration)
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
-                        v.visibility = View.INVISIBLE
+                        v.visibility = if(v==contentView) View.INVISIBLE else View.GONE
                     }
                 })
                 .start()
@@ -201,19 +201,17 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         return super.dispatchTouchEvent(ev)
     }
 
-
     private var mRetryAction: ((errView: View) -> Unit)? = null
 
-    /**********  自定义配置  **********/
     /**
      * 设置加载中的布局
      */
-    private fun setLoadingLayout(layoutId: Int): StateLayout {
+    private fun setLoadingLayout(): StateLayout {
         if (loadingView?.parent != null) removeView(loadingView)
-        loadingView = LayoutInflater.from(context).inflate(layoutId, this, false)
+        loadingView = LayoutInflater.from(context).inflate(loadingLayoutId, this, false)
         loadingView?.apply {
             (layoutParams as LayoutParams).gravity = Gravity.CENTER
-            visibility = View.INVISIBLE
+            visibility = View.GONE
             alpha = 0f
             addView(loadingView)
         }
@@ -223,13 +221,13 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     /**
      * 设置数据为空的布局
      */
-    private fun setEmptyLayout(layoutId: Int): StateLayout {
+    private fun setEmptyLayout(): StateLayout {
         if(noEmptyAndError)return this
         if (emptyView?.parent != null) removeView(emptyView)
-        emptyView = LayoutInflater.from(context).inflate(layoutId, this, false)
+        emptyView = LayoutInflater.from(context).inflate(emptyLayoutId, this, false)
         emptyView?.apply {
             (layoutParams as LayoutParams).gravity = Gravity.CENTER
-            visibility = View.INVISIBLE
+            visibility = View.GONE
             alpha = 0f
             addView(emptyView)
         }
@@ -239,13 +237,13 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     /**
      * 设置加载失败的布局
      */
-    private fun setErrorLayout(layoutId: Int): StateLayout {
+    private fun setErrorLayout(): StateLayout {
         if(noEmptyAndError)return this
         if (errorView?.parent != null) removeView(errorView)
-        errorView = LayoutInflater.from(context).inflate(layoutId, this, false)
+        errorView = LayoutInflater.from(context).inflate(errorLayoutId, this, false)
         errorView?.apply {
             (layoutParams as LayoutParams).gravity = Gravity.CENTER
-            visibility = View.INVISIBLE
+            visibility = View.GONE
             alpha = 0f
             setOnClickListener { retry() }
             addView(errorView)
@@ -277,9 +275,18 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
         noDataText = emptyText
         this.noEmptyAndError = noEmptyAndError
-        if (loadingLayoutId != 0) setLoadingLayout(loadingLayoutId)
-        if (emptyLayoutId != 0) setEmptyLayout(emptyLayoutId)
-        if (errorLayoutId != 0) setErrorLayout(errorLayoutId)
+        if (loadingLayoutId != 0) {
+            this.loadingLayoutId = loadingLayoutId
+            setLoadingLayout()
+        }
+        if (emptyLayoutId != 0){
+            this.emptyLayoutId  = emptyLayoutId
+            setEmptyLayout()
+        }
+        if (errorLayoutId != 0){
+            this.errorLayoutId = errorLayoutId
+            setErrorLayout()
+        }
         if (useContentBgWhenLoading) {
             this.useContentBgWhenLoading = useContentBgWhenLoading
         }

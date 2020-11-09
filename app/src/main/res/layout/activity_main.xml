@@ -70,7 +70,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/focus"
                 android:background="#f00"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
@@ -78,7 +78,7 @@
                 android:padding="15dp"
                 android:text="关注"
                 android:textColor="#fff"
-                android:textSize="18sp"/>
+                android:textSize="14sp"/>
         </LinearLayout>
 
 

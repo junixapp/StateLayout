@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         stateLayout = StateLayout(this)
                 .config(
                         enableLoadingShadow = true,
-                        emptyLayoutId = R.layout.custom_empty,
                         emptyText = "自定义文字",
                         retryAction = {
                     Toast.makeText(this, "点击了重试", Toast.LENGTH_SHORT).show()
@@ -93,9 +92,10 @@ class MainActivity : AppCompatActivity() {
 
         //测试布局中使用
         slInLayout.config(
-//                loadingLayoutId = R.layout.custom_loading2,
+                loadingLayoutId = R.layout.custom_loading2,
                 errorLayoutId = R.layout.custom_error,
-                emptyLayoutId = R.layout.custom_empty) { slInLayout.postDelayed({slInLayout.showEmpty()}, 1000) }
+                emptyLayoutId = R.layout.custom_empty
+        ) { slInLayout.postDelayed({slInLayout.showEmpty()}, 1000) }
         slInLayout.showLoading()
         slInLayout.postDelayed({slInLayout.showContent()}, 2000)
         tvInLayout.setOnClickListener {
