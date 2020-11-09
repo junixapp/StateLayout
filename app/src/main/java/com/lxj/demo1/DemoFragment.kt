@@ -18,14 +18,14 @@ class DemoFragment : BaseFragment() {
         stateLayout.showLoading()
 
         Handler().postDelayed({
-            stateLayout.showEmpty()
+            stateLayout.showContent()
 
             rv.layoutManager = LinearLayoutManager(context)
-//            rv.adapter = object : EasyAdapter<Int>(listOf(1, 1, 1, 1, 1), android.R.layout.simple_list_item_1) {
-//                override fun bind(holder: ViewHolder, t: Int, position: Int) {
-//                    holder.getView<TextView>(android.R.id.text1).text = "index = ${position}"
-//                }
-//            }
+            rv.adapter = object : EasyAdapter<Int>(listOf(1, 1, 1, 1, 1), android.R.layout.simple_list_item_1) {
+                override fun bind(holder: ViewHolder, t: Int, position: Int) {
+                    holder.getView<TextView>(android.R.id.text1).text = "index = ${position}"
+                }
+            }
         }, 600)
     }
 

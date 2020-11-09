@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.Fragment
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -16,9 +17,9 @@ import com.lxj.statelayout.State.*
 class StateLayout @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0)
     : FrameLayout(context, attributeSet, defStyleAttr) {
     var state = None // default state
-    var loadingView: View
-    var emptyView: View
-    var errorView: View
+    var loadingView: View? = null
+    var emptyView: View? = null
+    var errorView: View? = null
     var contentView: View? = null
     var animDuration = 250L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
@@ -26,23 +27,24 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     var noDataText: String = "暂无数据"
     var enableTouchWhenLoading = false
     var defaultShowLoading = false
+    var noEmptyAndError = false //是否去除empty和error状态，有时候只需要一个loading状态，这样减少内存
+    var loadingLayoutId = 0
+    var emptyLayoutId = 0
+    var errorLayoutId = 0
 
     init {
         val ta = context.obtainStyledAttributes(attributeSet, R.styleable.StateLayout)
-        val loadingLayout = ta.getResourceId(R.styleable.StateLayout_sl_loadingLayoutId, R.layout._loading_layout_loading)
-        val emptyLayout = ta.getResourceId(R.styleable.StateLayout_sl_emptyLayoutId, R.layout._loading_layout_empty)
-        val errorLayout = ta.getResourceId(R.styleable.StateLayout_sl_errorLayoutId, R.layout._loading_layout_error)
+        loadingLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_loadingLayoutId, R.layout._loading_layout_loading)
+        emptyLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_emptyLayoutId, R.layout._loading_layout_empty)
+        errorLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_errorLayoutId, R.layout._loading_layout_error)
         animDuration = ta.getInt(R.styleable.StateLayout_sl_animDuration, 250).toLong()
         useContentBgWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_useContentBgWhenLoading, false)
         enableLoadingShadow = ta.getBoolean(R.styleable.StateLayout_sl_enableLoadingShadow, false)
         enableTouchWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_enableTouchWhenLoading, false)
         defaultShowLoading = ta.getBoolean(R.styleable.StateLayout_sl_defaultShowLoading, false)
+        noEmptyAndError = ta.getBoolean(R.styleable.StateLayout_sl_noEmptyAndError, false)
         noDataText = ta.getString(R.styleable.StateLayout_sl_emptyText) ?: "暂无数据"
         ta.recycle()
-
-        loadingView = LayoutInflater.from(context).inflate(loadingLayout, this, false)
-        emptyView = LayoutInflater.from(context).inflate(emptyLayout, this, false)
-        errorView = LayoutInflater.from(context).inflate(errorLayout, this, false)
     }
 
     fun wrap(view: View?): StateLayout {
@@ -50,7 +52,9 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
             throw IllegalArgumentException("view can not be null")
         }
 
-        prepareStateView()
+        setLoadingLayout(loadingLayoutId)
+        setEmptyLayout(emptyLayoutId)
+        setErrorLayout(errorLayoutId)
 
         view.visibility = View.INVISIBLE
         view.alpha = 0f
@@ -71,7 +75,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
             parent.addView(this, index, lp)
             contentView = view
         }
-        switchLayout(if(defaultShowLoading) Loading else Content)
+        switchLayout(if (defaultShowLoading) Loading else Content)
         return this
     }
 
@@ -81,38 +85,12 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
 
     override fun onFinishInflate() {
         super.onFinishInflate()
-        if(childCount>0){
+        if (childCount > 0) {
             contentView = getChildAt(0)
-            prepareStateView()
-            switchLayout(if(defaultShowLoading) Loading else Content)
-        }
-    }
-
-    private fun prepareStateView() {
-        if(emptyView.parent ==null){
-            with(emptyView) {
-                visibility = View.INVISIBLE
-                alpha = 0f
-            }
-            addView(emptyView)
-        }
-
-        if(errorView.parent==null){
-            with(errorView) {
-                visibility = View.INVISIBLE
-                alpha = 0f
-                findViewById<View>(R.id.btn_retry)?.setOnClickListener { retry() }
-                setOnClickListener {retry() }
-            }
-            addView(errorView)
-        }
-
-        if(loadingView.parent == null){
-            with(loadingView) {
-                visibility = View.INVISIBLE
-                alpha = 0f
-            }
-            addView(loadingView)
+            setLoadingLayout(loadingLayoutId)
+            setEmptyLayout(emptyLayoutId)
+            setErrorLayout(errorLayoutId)
+            switchLayout(if (defaultShowLoading) Loading else Content)
         }
     }
 
@@ -143,7 +121,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         }
     }
 
-    fun showLoading(showText: Boolean = true): StateLayout {
+    fun showLoading(): StateLayout {
         switchLayout(Loading)
         return this
     }
@@ -175,10 +153,11 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         post(switchTask)
     }
 
-    private fun retry(){
+    private fun retry() {
+        if (errorView == null) return
         showLoading()
         handler.postDelayed({
-            mRetryAction?.invoke(errorView)
+            mRetryAction?.invoke(errorView!!)
         }, animDuration)
     }
 
@@ -231,12 +210,14 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
      * 设置加载中的布局
      */
     private fun setLoadingLayout(layoutId: Int): StateLayout {
-        if(loadingView.parent!=null) removeView(loadingView)
+        if (loadingView?.parent != null) removeView(loadingView)
         loadingView = LayoutInflater.from(context).inflate(layoutId, this, false)
-        (loadingView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
-        loadingView.visibility = View.INVISIBLE
-        loadingView.alpha = 0f
-        addView(loadingView)
+        loadingView?.apply {
+            (layoutParams as LayoutParams).gravity = Gravity.CENTER
+            visibility = View.INVISIBLE
+            alpha = 0f
+            addView(loadingView)
+        }
         return this
     }
 
@@ -244,12 +225,15 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
      * 设置数据为空的布局
      */
     private fun setEmptyLayout(layoutId: Int): StateLayout {
-        if(emptyView.parent !=null) removeView(emptyView)
+        if(noEmptyAndError)return this
+        if (emptyView?.parent != null) removeView(emptyView)
         emptyView = LayoutInflater.from(context).inflate(layoutId, this, false)
-        (emptyView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
-        emptyView.visibility = View.INVISIBLE
-        emptyView.alpha = 0f
-        addView(emptyView)
+        emptyView?.apply {
+            (layoutParams as LayoutParams).gravity = Gravity.CENTER
+            visibility = View.INVISIBLE
+            alpha = 0f
+            addView(emptyView)
+        }
         return this
     }
 
@@ -257,13 +241,16 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
      * 设置加载失败的布局
      */
     private fun setErrorLayout(layoutId: Int): StateLayout {
-        if(errorView.parent!=null) removeView(errorView)
+        if(noEmptyAndError)return this
+        if (errorView?.parent != null) removeView(errorView)
         errorView = LayoutInflater.from(context).inflate(layoutId, this, false)
-        (errorView.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
-        errorView.visibility = View.INVISIBLE
-        errorView.alpha = 0f
-        errorView.setOnClickListener {retry() }
-        addView(errorView)
+        errorView?.apply {
+            (layoutParams as LayoutParams).gravity = Gravity.CENTER
+            visibility = View.INVISIBLE
+            alpha = 0f
+            setOnClickListener { retry() }
+            addView(errorView)
+        }
         return this
     }
 
