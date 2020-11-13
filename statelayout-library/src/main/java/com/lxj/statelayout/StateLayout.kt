@@ -23,7 +23,8 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     var animDuration = 250L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
-    var noDataText: String = "暂无数据"
+    var emptyText: String = "暂无数据"
+    var emptyIcon: Int = 0
     var enableTouchWhenLoading = false
     var defaultShowLoading = false
     var noEmptyAndError = false //是否去除empty和error状态，有时候只需要一个loading状态，这样减少内存
@@ -42,7 +43,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         enableTouchWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_enableTouchWhenLoading, false)
         defaultShowLoading = ta.getBoolean(R.styleable.StateLayout_sl_defaultShowLoading, false)
         noEmptyAndError = ta.getBoolean(R.styleable.StateLayout_sl_noEmptyAndError, false)
-        noDataText = ta.getString(R.styleable.StateLayout_sl_emptyText) ?: "暂无数据"
+        emptyText = ta.getString(R.styleable.StateLayout_sl_emptyText) ?: "暂无数据"
         ta.recycle()
     }
 
@@ -130,12 +131,8 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         return this
     }
 
-    fun showEmpty(noDataIconRes: Int = R.drawable._statelayout_empty): StateLayout {
+    fun showEmpty(): StateLayout {
         switchLayout(Empty)
-        val textView = emptyView?.findViewById<TextView>(R.id.tvNoDataText)
-        textView?.text = noDataText
-        val imageView = emptyView?.findViewById<ImageView>(R.id.ivNoDataIcon)
-        imageView?.setImageResource(noDataIconRes)
         return this
     }
 
@@ -230,6 +227,20 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
             visibility = View.GONE
             alpha = 0f
             addView(emptyView)
+
+            //智能设置文字和图标
+            if(emptyView!=null && emptyView is ViewGroup){
+                val group = emptyView as ViewGroup
+                (0 until group.childCount).forEach {
+                    val child = group.getChildAt(it)
+                    if(child is TextView) {
+                        child.text = emptyText
+                    }else if(child is ImageView && emptyIcon!=0){
+                        child.setImageResource(emptyIcon)
+                    }
+                }
+            }
+
         }
         return this
     }
@@ -266,6 +277,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                emptyLayoutId: Int = 0,
                errorLayoutId: Int = 0,
                emptyText: String = "暂无数据",
+               emptyIcon: Int = 0,
                useContentBgWhenLoading: Boolean = false,
                animDuration: Long = 0L,
                noEmptyAndError: Boolean = false,
@@ -273,7 +285,8 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                enableLoadingShadow: Boolean = false,
                enableTouchWhenLoading: Boolean = false,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
-        noDataText = emptyText
+        this.emptyText = emptyText
+        this.emptyIcon = emptyIcon
         this.noEmptyAndError = noEmptyAndError
         if (loadingLayoutId != 0) {
             this.loadingLayoutId = loadingLayoutId

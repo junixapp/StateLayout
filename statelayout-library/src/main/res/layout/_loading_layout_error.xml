@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:src="@drawable/_statelayout_error"/>
 
-    <Button
+    <TextView
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="32dp"
@@ -20,7 +20,6 @@
         android:paddingRight="14dp"
         android:textSize="12sp"
         android:layout_marginTop="15dp"
-        android:background="@drawable/_statelayout_btn_bg"
         android:text="加载失败，点击重试"
         android:textColor="#444"/>
 
