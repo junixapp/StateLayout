@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.Fragment
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -132,12 +133,21 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     }
 
     fun showEmpty(): StateLayout {
-        switchLayout(Empty)
+        if(noEmptyAndError) {
+            switchLayout(Content)
+        }else{
+            switchLayout(Empty)
+        }
         return this
     }
 
     fun showError(): StateLayout {
-        switchLayout(Error)
+        if(noEmptyAndError) {
+            Log.e("tag", "no error show content")
+            switchLayout(Content)
+        }else{
+            switchLayout(Error)
+        }
         return this
     }
 
@@ -287,7 +297,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
         this.emptyText = emptyText
         this.emptyIcon = emptyIcon
-        this.noEmptyAndError = noEmptyAndError
+        if(noEmptyAndError) this.noEmptyAndError = noEmptyAndError
         if (loadingLayoutId != 0) {
             this.loadingLayoutId = loadingLayoutId
             setLoadingLayout()
@@ -306,9 +316,9 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         if (animDuration != 0L) {
             this.animDuration = animDuration
         }
-        this.defaultShowLoading = defaultShowLoading
-        this.enableLoadingShadow = enableLoadingShadow
-        this.enableTouchWhenLoading = enableTouchWhenLoading
+        if(defaultShowLoading) this.defaultShowLoading = defaultShowLoading
+        if(enableLoadingShadow) this.enableLoadingShadow = enableLoadingShadow
+        if(enableTouchWhenLoading) this.enableTouchWhenLoading = enableTouchWhenLoading
         mRetryAction = retryAction
         return this
     }
