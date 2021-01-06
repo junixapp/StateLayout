@@ -30,7 +30,7 @@ publish {
     userOrg = 'li-xiaojun'
     groupId = 'com.lxj'
     artifactId = 'statelayout'
-    publishVersion = '1.1.8'
+    publishVersion = '1.1.9'
     repoName = 'jrepo'
     desc = 'Simple way to change your layout state, like loading, _statelayout_empty, _statelayout_error. Strong customizitaion, written by Kotlin!'
     website = 'https://github.com/li-xiaojun/StateLayout'
