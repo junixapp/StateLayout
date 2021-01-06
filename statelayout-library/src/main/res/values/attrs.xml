@@ -11,6 +11,7 @@
         <attr name="sl_enableTouchWhenLoading" format="boolean" />
         <attr name="sl_defaultShowLoading" format="boolean" />
         <attr name="sl_noEmptyAndError" format="boolean" />
+        <attr name="sl_showLoadingOnce" format="boolean" />
         <attr name="sl_animDuration" format="integer" />
     </declare-styleable>
 
