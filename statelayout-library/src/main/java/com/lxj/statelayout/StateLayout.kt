@@ -36,17 +36,19 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
 
     init {
         val ta = context.obtainStyledAttributes(attributeSet, R.styleable.StateLayout)
-        loadingLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_loadingLayoutId, R.layout._loading_layout_loading)
-        emptyLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_emptyLayoutId, R.layout._loading_layout_empty)
-        errorLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_errorLayoutId, R.layout._loading_layout_error)
-        animDuration = ta.getInt(R.styleable.StateLayout_sl_animDuration, 250).toLong()
-        useContentBgWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_useContentBgWhenLoading, false)
-        enableLoadingShadow = ta.getBoolean(R.styleable.StateLayout_sl_enableLoadingShadow, false)
-        enableTouchWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_enableTouchWhenLoading, false)
-        defaultShowLoading = ta.getBoolean(R.styleable.StateLayout_sl_defaultShowLoading, false)
-        noEmptyAndError = ta.getBoolean(R.styleable.StateLayout_sl_noEmptyAndError, false)
-        showLoadingOnce = ta.getBoolean(R.styleable.StateLayout_sl_showLoadingOnce, false)
-        emptyText = ta.getString(R.styleable.StateLayout_sl_emptyText) ?: "暂无数据"
+        loadingLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_loadingLayoutId, StateLayoutConfig.loadingLayoutId)
+        emptyLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_emptyLayoutId, StateLayoutConfig.emptyLayoutId)
+        errorLayoutId = ta.getResourceId(R.styleable.StateLayout_sl_errorLayoutId, StateLayoutConfig.errorLayoutId)
+        animDuration = ta.getInt(R.styleable.StateLayout_sl_animDuration, StateLayoutConfig.animDuration.toInt()).toLong()
+        useContentBgWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_useContentBgWhenLoading, StateLayoutConfig.useContentBgWhenLoading)
+        enableLoadingShadow = ta.getBoolean(R.styleable.StateLayout_sl_enableLoadingShadow, StateLayoutConfig.enableLoadingShadow)
+        enableTouchWhenLoading = ta.getBoolean(R.styleable.StateLayout_sl_enableTouchWhenLoading, StateLayoutConfig.enableTouchWhenLoading)
+        defaultShowLoading = ta.getBoolean(R.styleable.StateLayout_sl_defaultShowLoading, StateLayoutConfig.defaultShowLoading)
+        noEmptyAndError = ta.getBoolean(R.styleable.StateLayout_sl_noEmptyAndError, StateLayoutConfig.noEmptyAndError)
+        showLoadingOnce = ta.getBoolean(R.styleable.StateLayout_sl_showLoadingOnce, StateLayoutConfig.showLoadingOnce)
+        emptyText = ta.getString(R.styleable.StateLayout_sl_emptyText) ?: StateLayoutConfig.emptyText
+        emptyIcon = ta.getResourceId(R.styleable.StateLayout_sl_emptyIcon, StateLayoutConfig.emptyIcon)
+
         ta.recycle()
     }
 
@@ -165,7 +167,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         if (errorView == null) return
         hasShowLoading = false
         showLoading()
-        handler.postDelayed({
+        postDelayed({
             mRetryAction?.invoke(errorView!!)
         }, animDuration)
     }
@@ -286,45 +288,45 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
      * @param enableTouchWhenLoading 是否在加载时允许触摸下层View
      * @param retryAction 加载失败状态下点击重试的行为
      */
-    fun config(loadingLayoutId: Int = 0,
-               emptyLayoutId: Int = 0,
-               errorLayoutId: Int = 0,
-               emptyText: String = "暂无数据",
-               emptyIcon: Int = 0,
-               useContentBgWhenLoading: Boolean = false,
-               animDuration: Long = 0L,
-               noEmptyAndError: Boolean = false,
-               defaultShowLoading: Boolean = false,
-               enableLoadingShadow: Boolean = false,
-               enableTouchWhenLoading: Boolean = false,
-               showLoadingOnce: Boolean = false,
+    fun config(loadingLayoutId: Int? = null,
+               emptyLayoutId: Int? = null,
+               errorLayoutId: Int? = null,
+               emptyText: String? = null,
+               emptyIcon: Int? = null,
+               useContentBgWhenLoading: Boolean? = null,
+               animDuration: Long? = null,
+               noEmptyAndError: Boolean? = null,
+               defaultShowLoading: Boolean? = null,
+               enableLoadingShadow: Boolean? = null,
+               enableTouchWhenLoading: Boolean? = null,
+               showLoadingOnce: Boolean? = null,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
-        this.emptyText = emptyText
-        this.emptyIcon = emptyIcon
-        if(noEmptyAndError) this.noEmptyAndError = noEmptyAndError
-        if (loadingLayoutId != 0) {
+        if(emptyText!=null)this.emptyText = emptyText
+        if(emptyIcon!=null)this.emptyIcon = emptyIcon
+        if(noEmptyAndError!=null) this.noEmptyAndError = noEmptyAndError
+        if (loadingLayoutId != null) {
             this.loadingLayoutId = loadingLayoutId
             setLoadingLayout()
         }
-        if (emptyLayoutId != 0){
+        if (emptyLayoutId != null){
             this.emptyLayoutId  = emptyLayoutId
             setEmptyLayout()
         }
-        if (errorLayoutId != 0){
+        if (errorLayoutId != null){
             this.errorLayoutId = errorLayoutId
             setErrorLayout()
         }
-        if (useContentBgWhenLoading) {
+        if (useContentBgWhenLoading!=null) {
             this.useContentBgWhenLoading = useContentBgWhenLoading
         }
-        if (animDuration != 0L) {
+        if (animDuration != null) {
             this.animDuration = animDuration
         }
-        if(defaultShowLoading) this.defaultShowLoading = defaultShowLoading
-        if(enableLoadingShadow) this.enableLoadingShadow = enableLoadingShadow
-        if(enableTouchWhenLoading) this.enableTouchWhenLoading = enableTouchWhenLoading
-        if(showLoadingOnce) this.showLoadingOnce = showLoadingOnce
-        mRetryAction = retryAction
+        if(defaultShowLoading!=null) this.defaultShowLoading = defaultShowLoading
+        if(enableLoadingShadow!=null) this.enableLoadingShadow = enableLoadingShadow
+        if(enableTouchWhenLoading!=null) this.enableTouchWhenLoading = enableTouchWhenLoading
+        if(showLoadingOnce!=null) this.showLoadingOnce = showLoadingOnce
+        if(mRetryAction!=null)mRetryAction = retryAction
         return this
     }
 }

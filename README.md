@@ -81,6 +81,11 @@ StateLayout(this)
     .showLoading()
 ```
 
+也可以全局配置，全局配置适用于所有的实例，但会被每个实例自己的配置覆盖：
+```kotlin
+StateLayoutConfig.init(...)
+```
+
 在Fragment中使用的时候需要注意下，要将StateLayout作为Fragment的View返回：
 ```kotlin
 private var stateLayout: StateLayout? = null

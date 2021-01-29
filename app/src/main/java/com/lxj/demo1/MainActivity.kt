@@ -7,6 +7,7 @@ import android.os.Handler
 import android.view.*
 import android.widget.Toast
 import com.lxj.statelayout.StateLayout
+import com.lxj.statelayout.StateLayoutConfig
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +15,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //全局配置
+//        StateLayoutConfig.init(emptyText = "嘻嘻嘻嘻嘻", emptyIcon = R.mipmap.ic_launcher_round)
 
         stateLayout = StateLayout(this)
                 .config(
