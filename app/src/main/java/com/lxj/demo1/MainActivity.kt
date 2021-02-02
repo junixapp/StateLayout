@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             stateLayout.showContent()
         }, 1000)
-        show()
+//        repeatShow()
 
 
         // create StateLayout for textView
@@ -108,10 +108,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun show(){
+    fun repeatShow(){
         Handler().postDelayed({
             stateLayout.showContent()
-            show()
+            repeatShow()
         }, 1000)
 
     }
