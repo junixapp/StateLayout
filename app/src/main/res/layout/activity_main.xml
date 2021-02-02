@@ -46,6 +46,9 @@
             android:text="我是一块任意的内容View，使用StateLayout来切换状态"
             android:textSize="20sp" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"

@@ -1,7 +1,7 @@
 package com.lxj.statelayout
 
 /**
- * 全局配置，对所有实例生效
+ * 全局配置，对所有实例生效，但会被实例自己的配置覆盖
  */
 object StateLayoutConfig {
     var animDuration = 250L

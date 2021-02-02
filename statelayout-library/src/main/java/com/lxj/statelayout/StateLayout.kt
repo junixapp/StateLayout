@@ -120,6 +120,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                 switch(errorView)
             }
             Content -> {
+                if(contentView?.visibility== VISIBLE)return
                 switch(contentView)
             }
         }

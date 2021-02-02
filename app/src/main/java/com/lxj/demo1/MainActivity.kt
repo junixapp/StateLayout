@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             stateLayout.showContent()
         }, 1000)
+        show()
 
 
         // create StateLayout for textView
@@ -105,6 +106,14 @@ class MainActivity : AppCompatActivity() {
         tvInLayout.setOnClickListener {
             slInLayout.showError()
         }
+    }
+
+    fun show(){
+        Handler().postDelayed({
+            stateLayout.showContent()
+            show()
+        }, 1000)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
