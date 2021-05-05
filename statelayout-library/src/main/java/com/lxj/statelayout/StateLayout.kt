@@ -120,7 +120,8 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                 switch(errorView)
             }
             Content -> {
-                if(contentView?.visibility== VISIBLE)return
+                if(contentView?.visibility==VISIBLE && loadingView?.visibility!=VISIBLE
+                        && emptyView?.visibility!=VISIBLE && errorView?.visibility!=VISIBLE)return
                 switch(contentView)
             }
         }
@@ -327,7 +328,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         if(enableLoadingShadow!=null) this.enableLoadingShadow = enableLoadingShadow
         if(enableTouchWhenLoading!=null) this.enableTouchWhenLoading = enableTouchWhenLoading
         if(showLoadingOnce!=null) this.showLoadingOnce = showLoadingOnce
-        if(mRetryAction!=null)mRetryAction = retryAction
+        if(retryAction!=null)mRetryAction = retryAction
         return this
     }
 }
