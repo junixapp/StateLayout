@@ -94,6 +94,7 @@
 
         <com.lxj.statelayout.StateLayout
             android:id="@+id/slInLayout"
+            app:sl_emptyText="数据为空"
             android:layout_marginBottom="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

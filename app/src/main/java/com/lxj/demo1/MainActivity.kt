@@ -97,8 +97,8 @@ class MainActivity : AppCompatActivity() {
         slInLayout.config(
                 emptyText = "大萨达所大撒",
                 loadingLayoutId = R.layout.custom_loading2,
-                errorLayoutId = R.layout.custom_error,
-                emptyLayoutId = R.layout.custom_empty
+                errorLayoutId = R.layout.custom_error
+//                emptyLayoutId = R.layout.custom_empty
         ) { slInLayout.postDelayed({slInLayout.showEmpty()}, 1000) }
         slInLayout.showLoading()
         slInLayout.postDelayed({slInLayout.showContent()}, 2000)

@@ -303,15 +303,15 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                enableTouchWhenLoading: Boolean? = null,
                showLoadingOnce: Boolean? = null,
                retryAction: ((errView: View) -> Unit)? = null): StateLayout {
-        if(emptyText!=null)this.emptyText = emptyText
-        if(emptyIcon!=null)this.emptyIcon = emptyIcon
+        if(emptyText!=null) this.emptyText = emptyText
+        if(emptyIcon!=null) this.emptyIcon = emptyIcon
         if(noEmptyAndError!=null) this.noEmptyAndError = noEmptyAndError
         if (loadingLayoutId != null) {
             this.loadingLayoutId = loadingLayoutId
             setLoadingLayout()
         }
-        if (emptyLayoutId != null){
-            this.emptyLayoutId  = emptyLayoutId
+        if (emptyLayoutId != null) this.emptyLayoutId  = emptyLayoutId
+        if(emptyLayoutId!=null || emptyText!=null || emptyIcon!=null){
             setEmptyLayout()
         }
         if (errorLayoutId != null){
