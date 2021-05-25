@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 28
@@ -26,12 +25,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
 }
 
-publish {
-    userOrg = 'li-xiaojun'
-    groupId = 'com.lxj'
-    artifactId = 'statelayout'
-    publishVersion = '1.2.2'
-    repoName = 'jrepo'
-    desc = 'Simple way to change your layout state, like loading, _statelayout_empty, _statelayout_error. Strong customizitaion, written by Kotlin!'
-    website = 'https://github.com/li-xiaojun/StateLayout'
-}
+//publish {
+//    userOrg = 'li-xiaojun'
+//    groupId = 'com.lxj'
+//    artifactId = 'statelayout'
+//    publishVersion = '1.2.2'
+//    repoName = 'jrepo'
+//    desc = 'Simple way to change your layout state, like loading, _statelayout_empty, _statelayout_error. Strong customizitaion, written by Kotlin!'
+//    website = 'https://github.com/li-xiaojun/StateLayout'
+//}
