@@ -100,6 +100,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     }
 
     private fun switchLayout(s: State) {
+        if(state==s)return
         state = s
         when (state) {
             Loading -> {
