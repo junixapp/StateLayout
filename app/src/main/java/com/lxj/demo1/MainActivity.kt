@@ -1,24 +1,30 @@
 package com.lxj.demo1
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.*
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.lxj.statelayout.StateLayout
-import com.lxj.statelayout.StateLayoutConfig
 import kotlinx.android.synthetic.main.activity_main.*
+import java.security.SecureRandom
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import javax.crypto.spec.SecretKeySpec
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var stateLayout: StateLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         //全局配置
 //        StateLayoutConfig.init(emptyText = "嘻嘻嘻嘻嘻", emptyIcon = R.mipmap.ic_launcher_round)
-
         stateLayout = StateLayout(this)
                 .config(
                         emptyText = "自定义文字",

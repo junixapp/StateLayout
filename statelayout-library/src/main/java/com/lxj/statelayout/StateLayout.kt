@@ -130,30 +130,36 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
 
     fun showLoading(): StateLayout {
         if(showLoadingOnce && hasShowLoading) return this
-        switchLayout(Loading)
-        if(showLoadingOnce) hasShowLoading = true
+        post {
+            switchLayout(Loading)
+            if(showLoadingOnce) hasShowLoading = true
+        }
         return this
     }
 
     fun showContent(): StateLayout {
-        switchLayout(Content)
+        post { switchLayout(Content) }
         return this
     }
 
     fun showEmpty(): StateLayout {
-        if(noEmptyAndError) {
-            switchLayout(Content)
-        }else{
-            switchLayout(Empty)
+        post {
+            if(noEmptyAndError) {
+                switchLayout(Content)
+            }else{
+                switchLayout(Empty)
+            }
         }
         return this
     }
 
     fun showError(): StateLayout {
-        if(noEmptyAndError) {
-            switchLayout(Content)
-        }else{
-            switchLayout(Error)
+        post {
+            if(noEmptyAndError) {
+                switchLayout(Content)
+            }else{
+                switchLayout(Error)
+            }
         }
         return this
     }
