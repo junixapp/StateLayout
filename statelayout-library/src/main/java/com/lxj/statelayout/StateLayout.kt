@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Color
 import androidx.fragment.app.Fragment
 import android.util.AttributeSet
+import android.util.Log
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -23,7 +24,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     var animDuration = 250L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
-    var emptyText: String = "暂无数据"
+    var emptyText: String = ""
     var emptyIcon: Int = 0
     var enableTouchWhenLoading = false
     var defaultShowLoading = false
@@ -257,9 +258,9 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                 val group = emptyView as ViewGroup
                 (0 until group.childCount).forEach {
                     val child = group.getChildAt(it)
-                    if(child is TextView) {
+                    if(child is TextView && child.text.isNullOrEmpty() && !emptyText.isNullOrEmpty()) {
                         child.text = emptyText
-                    }else if(child is ImageView && emptyIcon!=0){
+                    }else if(child is ImageView && child.drawable==null && emptyIcon!=0){
                         child.setImageResource(emptyIcon)
                     }
                 }
