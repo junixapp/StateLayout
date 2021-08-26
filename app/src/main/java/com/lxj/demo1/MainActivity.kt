@@ -43,7 +43,9 @@ class MainActivity : AppCompatActivity() {
 
         // create StateLayout for textView
         val layout2 = StateLayout(this)
-                .config(retryAction = {
+                .config(
+                    loadingLayoutId = R.layout.layout_loading,
+                    retryAction = {
                             Toast.makeText(this, "点击了重试", Toast.LENGTH_SHORT).show()
                         })
                 .wrap(view_content)

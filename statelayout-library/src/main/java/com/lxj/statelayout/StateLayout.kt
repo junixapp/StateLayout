@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.util.AttributeSet
 import android.util.Log
@@ -12,6 +14,7 @@ import android.view.*
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.HandlerCompat
 import com.lxj.statelayout.State.*
 
 class StateLayout @JvmOverloads constructor(context: Context, attributeSet: AttributeSet? = null, defStyleAttr: Int = 0)
@@ -34,6 +37,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     var emptyLayoutId = 0
     var errorLayoutId = 0
     private var hasShowLoading = false
+    private val mHandler = Handler(Looper.getMainLooper())
 
     init {
         val ta = context.obtainStyledAttributes(attributeSet, R.styleable.StateLayout)
@@ -131,7 +135,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
 
     fun showLoading(): StateLayout {
         if(showLoadingOnce && hasShowLoading) return this
-        post {
+        mHandler.post {
             switchLayout(Loading)
             if(showLoadingOnce) hasShowLoading = true
         }
@@ -139,12 +143,12 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     }
 
     fun showContent(): StateLayout {
-        post { switchLayout(Content) }
+        mHandler.post { switchLayout(Content) }
         return this
     }
 
     fun showEmpty(): StateLayout {
-        post {
+        mHandler.post {
             if(noEmptyAndError) {
                 switchLayout(Content)
             }else{
@@ -155,7 +159,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     }
 
     fun showError(): StateLayout {
-        post {
+        mHandler.post {
             if(noEmptyAndError) {
                 switchLayout(Content)
             }else{
@@ -170,14 +174,14 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
             removeCallbacks(switchTask)
         }
         switchTask = SwitchTask(v)
-        post(switchTask)
+        mHandler.post(switchTask)
     }
 
     private fun retry() {
         if (errorView == null) return
         hasShowLoading = false
         showLoading()
-        postDelayed({
+        mHandler.postDelayed({
             mRetryAction?.invoke(errorView!!)
         }, animDuration)
     }
@@ -338,5 +342,10 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         if(showLoadingOnce!=null) this.showLoadingOnce = showLoadingOnce
         if(retryAction!=null)mRetryAction = retryAction
         return this
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        mHandler.removeCallbacksAndMessages(null)
     }
 }

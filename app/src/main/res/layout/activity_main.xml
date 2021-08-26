@@ -12,6 +12,9 @@
         tools:context="com.lxj.demo1.MainActivity">
 
 
+        <include layout="@layout/layout_loading"/>
+
+
         <Button
             android:id="@+id/btn_loading"
             android:layout_width="match_parent"
