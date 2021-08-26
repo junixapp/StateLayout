@@ -15,7 +15,7 @@ Simple way to change your layout state, like loading, empty, error. Strong custo
 
 
 # Gradle
-从1.2.3之后迁移到jitpack上了。[![](https://jitpack.io/v/li-xiaojun/StateLayout.svg)](https://jitpack.io/#li-xiaojun/StateLayout)
+[![](https://jitpack.io/v/li-xiaojun/StateLayout.svg)](https://jitpack.io/#li-xiaojun/StateLayout)
 ```
 implementation 'com.github.li-xiaojun:StateLayout:Tag'
 ```
@@ -28,14 +28,6 @@ allprojects {
     }
 }
 ```
-
------------------------------------ 分割线 ---------------------------------------------
-
-[ ![Download](https://api.bintray.com/packages/li-xiaojun/jrepo/statelayout/images/download.svg) ](https://bintray.com/li-xiaojun/jrepo/statelayout/_latestVersion)
-```
-implementation 'com.lxj:statelayout:最新版本号'
-```
-
 
 
 # Usage
