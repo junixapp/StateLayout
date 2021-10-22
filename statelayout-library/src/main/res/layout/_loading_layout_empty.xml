@@ -22,5 +22,5 @@
         android:layout_gravity="center"
         android:textColor="#444"
         android:textSize="15sp"
-        android:text="暂无数据"/>
+        android:text="@string/nodata"/>
 </LinearLayout>
