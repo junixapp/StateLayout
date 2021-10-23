@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="load_failed_try_again">Load failed, try again</string>
+    <string name="nodata">No Data</string>
+</resources>
