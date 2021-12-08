@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
-
-    <com.airbnb.lottie.LottieAnimationView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.airbnb.lottie.LottieAnimationView  xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="60pt"
         android:layout_height="60pt"
         android:layout_gravity="center"
         android:layout_margin="5pt"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="lottie/refresh.json"
-        app:lottie_imageAssetsFolder="lottie/refresh"
+        app:lottie_fileName="refresh.json"
+        app:lottie_imageAssetsFolder="refresh"
         app:lottie_loop="true"
         app:lottie_speed="1" />
-
-<!--</FrameLayout>-->

@@ -24,7 +24,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
     var emptyView: View? = null
     var errorView: View? = null
     var contentView: View? = null
-    var animDuration = 250L
+    var animDuration = 120L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
     var emptyText: String = ""
@@ -171,7 +171,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
 
     private fun switch(v: View?) {
         if (switchTask != null) {
-            removeCallbacks(switchTask)
+            mHandler.removeCallbacks(switchTask)
         }
         switchTask = SwitchTask(v)
         mHandler.post(switchTask)

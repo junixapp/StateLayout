@@ -4,7 +4,7 @@ package com.lxj.statelayout
  * 全局配置，对所有实例生效，但会被实例自己的配置覆盖
  */
 object StateLayoutConfig {
-    var animDuration = 250L
+    var animDuration = 120L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
     var emptyText: String = "暂无数据"
