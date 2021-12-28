@@ -227,7 +227,7 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
         return super.dispatchTouchEvent(ev)
     }
 
-    private var mRetryAction: ((errView: View) -> Unit)? = null
+    var mRetryAction: ((errView: View) -> Unit)? = null
 
     /**
      * 设置加载中的布局
