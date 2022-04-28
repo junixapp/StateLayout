@@ -171,10 +171,10 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
 
     private fun switch(v: View?) {
         if (switchTask != null) {
-            mHandler.removeCallbacks(switchTask)
+            mHandler.removeCallbacks(switchTask!!)
         }
         switchTask = SwitchTask(v)
-        mHandler.post(switchTask)
+        mHandler.post(switchTask!!)
     }
 
     private fun retry() {

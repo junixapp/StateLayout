@@ -3,15 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="30dp"
     android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/ivNoDataIcon"
         android:src="@drawable/_statelayout_empty"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_gravity="center"/>
 
     <TextView
@@ -20,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textColor="#444"
-        android:textSize="15sp"
-        android:text="@string/nodata"/>
+        android:textColor="@color/_statelayout_hint_color"
+        android:textSize="14sp"
+        android:text="@string/_statelayout_nodata"/>
 </LinearLayout>

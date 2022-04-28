@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="load_failed_try_again">加载失败，点击重试</string>
-    <string name="nodata">暂无数据</string>
+    <string name="_statelayout_load_failed">点击重试</string>
+    <string name="_statelayout_nodata">暂无数据</string>
 </resources>

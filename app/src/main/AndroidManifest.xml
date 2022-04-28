@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.lxj.demo1.MainActivity" >
+        <activity android:name="com.lxj.demo1.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +18,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.lxj.demo1.InFragmentDemo"/>
+        <activity android:name="com.lxj.demo1.InFragmentDemo"
+            android:exported="true"/>
     </application>
 
 </manifest>

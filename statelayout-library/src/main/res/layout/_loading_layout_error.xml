@@ -18,9 +18,9 @@
         android:layout_gravity="center"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:layout_marginTop="15dp"
-        android:text="@string/load_failed_try_again"
-        android:textColor="#444"/>
+        android:text="@string/_statelayout_load_failed"
+        android:textColor="@color/_statelayout_hint_color"/>
 
 </LinearLayout>
