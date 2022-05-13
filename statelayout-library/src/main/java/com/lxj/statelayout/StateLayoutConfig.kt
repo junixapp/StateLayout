@@ -7,7 +7,7 @@ object StateLayoutConfig {
     var animDuration = 120L
     var useContentBgWhenLoading = false //是否在Loading状态使用内容View的背景
     var enableLoadingShadow = false //是否启用加载状态时的半透明阴影
-    var emptyText: String = "暂无数据"
+    var emptyText: String = ""
     var emptyIcon: Int = 0
     var enableTouchWhenLoading = false
     var defaultShowLoading = false

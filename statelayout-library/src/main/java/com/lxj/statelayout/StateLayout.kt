@@ -262,9 +262,9 @@ class StateLayout @JvmOverloads constructor(context: Context, attributeSet: Attr
                 val group = emptyView as ViewGroup
                 (0 until group.childCount).forEach {
                     val child = group.getChildAt(it)
-                    if(child is TextView && child.text.isNullOrEmpty() && !emptyText.isNullOrEmpty()) {
+                    if(child is TextView && !emptyText.isNullOrEmpty()) {
                         child.text = emptyText
-                    }else if(child is ImageView && child.drawable==null && emptyIcon!=0){
+                    }else if(child is ImageView && emptyIcon!=0){
                         child.setImageResource(emptyIcon)
                     }
                 }
